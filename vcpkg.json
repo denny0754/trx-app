@@ -1,0 +1,17 @@
+{
+  "dependencies": [
+    {
+      "name": "spdlog",
+      "version>=": "1.15.0"
+    },
+    {
+      "name": "glfw3",
+      "version>=": "3.4"
+    },
+    {
+      "name": "imgui",
+      "version>=": "1.91.5",
+      "features": [ "glfw-binding", "opengl3-binding" ]
+    }
+  ]
+}
