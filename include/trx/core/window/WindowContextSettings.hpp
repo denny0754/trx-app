@@ -19,10 +19,7 @@
 #pragma once
 
 /* Project Headers */
-#include <trx/core/window/WindowContextSettings.hpp>
-
-/* External Headers */
-#include <GLFW/glfw3.h>
+#include <trx/utils/types/Vecto2.hpp>
 
 /* Standard Headers */
 #include <string>
@@ -30,28 +27,11 @@
 namespace trx
 {
 
-class Window
+struct WindowContextSettings
 {
-public:
-	Window(Vector2u win_size, const std::string& win_title);
+	Vector2u WindowSize;
 
-	Window(const WindowContextSettings& context_settings);
-
-	void SetSize(Vector2u win_size);
-
-	Vector2u GetSize() const;
-
-	void SetTitle(const std::string& win_title);
-
-	const std::string& GetTitle() const;
-
-private:
-	void InitWindow();
-
-private:
-	GLFWwindow* m_nativeWindow;
-
-	WindowContextSettings m_winSettings;
+	std::string WindowTitle;
 };
 
 } // ns trx

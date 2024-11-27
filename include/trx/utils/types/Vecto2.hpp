@@ -18,40 +18,20 @@
 
 #pragma once
 
-/* Project Headers */
-#include <trx/core/window/WindowContextSettings.hpp>
-
-/* External Headers */
-#include <GLFW/glfw3.h>
-
-/* Standard Headers */
-#include <string>
-
 namespace trx
 {
 
-class Window
+template<typename Ty>
+struct Vector2
 {
-public:
-	Window(Vector2u win_size, const std::string& win_title);
+	Ty x;
 
-	Window(const WindowContextSettings& context_settings);
-
-	void SetSize(Vector2u win_size);
-
-	Vector2u GetSize() const;
-
-	void SetTitle(const std::string& win_title);
-
-	const std::string& GetTitle() const;
-
-private:
-	void InitWindow();
-
-private:
-	GLFWwindow* m_nativeWindow;
-
-	WindowContextSettings m_winSettings;
+	Ty y;
 };
+
+typedef Vector2<int> Vector2i;
+typedef Vector2<unsigned int> Vector2u;
+typedef Vector2<float> Vector2f;
+typedef Vector2<double> Vector2d;
 
 } // ns trx

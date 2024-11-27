@@ -2,7 +2,7 @@
 add_executable (
 	TRXAPP
 	"EntryPoint.cpp"
- "core/Application.cpp")
+ "core/Application.cpp" "core/window/Window.cpp")
 
 set_target_properties(TRXAPP PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
