@@ -37,3 +37,4 @@ out/
 # User Settings
 .vs/
 CMakeUserPresets.json
+.vscode/
