@@ -21,7 +21,6 @@
 
 /* Project Headers */
 #include <trx/core/framework/Framework.hpp>
-#include <trx/core/ui/window/Window.hpp>
 #include <trx/core/ui/LayerStack.hpp>
 
 /* Standard Headers */
