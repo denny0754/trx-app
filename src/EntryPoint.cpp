@@ -3,10 +3,10 @@
 
 int main()
 {
-	trx::core::Application::Get().Initialize();
+	trx::Application::Get().Initialize();
 
-	//trx::core::Application::Get().Run();
+	trx::Application::Get().Run();
 
-	trx::core::Application::Get().Shutdown();
+	trx::Application::Get().Shutdown();
 	return 0;
 }

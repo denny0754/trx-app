@@ -18,20 +18,38 @@
 
 #pragma once
 
+
 /* Project Headers */
-#include <trx/utils/types/Vecto2.hpp>
+#include <trx/core/framework/Framework.hpp>
+#include <trx/core/ui/window/Window.hpp>
+#include <trx/core/ui/LayerStack.hpp>
 
 /* Standard Headers */
-#include <string>
+#include <memory>
+#include <vector>
 
 namespace trx
 {
 
-struct WindowContextSettings
+class FrontendFw : public Framework
 {
-	Vector2u WindowSize;
+public:
+	FrontendFw() = default;
 
-	std::string WindowTitle;
+	void Initialize() override;
+
+	void Update() override;
+
+	void Shutdown() override;
+
+	void Restart() override;
+
+private:
+	// Window m_window;
+
+	GLFWwindow* m_nativeWindow;
+
+	LayerStack m_layerStack;
 };
 
 } // ns trx

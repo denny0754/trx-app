@@ -2,7 +2,20 @@
 add_executable (
 	TRXAPP
 	"EntryPoint.cpp"
- "core/Application.cpp" "core/window/Window.cpp")
+ 	"core/Application.cpp"
+	"core/Middleware.cpp"
+
+	"core/event/Event.cpp"
+
+	"core/framework/Framework.cpp"
+	"core/framework/FrontendFw.cpp"
+
+	"core/ui/window/Window.cpp"
+	"core/ui/Layer.cpp"
+	"core/ui/LayerStack.cpp"
+
+	"utils/logging/LogManager.cpp"
+)
 
 set_target_properties(TRXAPP PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
@@ -23,5 +36,6 @@ target_link_libraries(
 	fmt::fmt
 	spdlog::spdlog
 	glfw
+	opengl32
 	imgui::imgui
 )

@@ -19,39 +19,28 @@
 #pragma once
 
 /* Project Headers */
-#include <trx/core/window/WindowContextSettings.hpp>
-
-/* External Headers */
-#include <GLFW/glfw3.h>
+#include <trx/core/event/EventData.hpp>
+#include <trx/core/event/EventKey.hpp>
 
 /* Standard Headers */
-#include <string>
+#include <cstdint>
 
 namespace trx
 {
 
-class Window
+class Event
 {
 public:
-	Window(Vector2u win_size, const std::string& win_title);
+    Event(EventData* event_data, EventKey event_key);
 
-	Window(const WindowContextSettings& context_settings);
+    EventData* GetEventData();
 
-	void SetSize(Vector2u win_size);
+    const EventKey GetEventKey() const;
 
-	Vector2u GetSize() const;
+protected:
+    EventData* m_eventData;
 
-	void SetTitle(const std::string& win_title);
-
-	const std::string& GetTitle() const;
-
-private:
-	void InitWindow();
-
-private:
-	GLFWwindow* m_nativeWindow;
-
-	WindowContextSettings m_winSettings;
+    EventKey m_eventKey;
 };
 
 } // ns trx

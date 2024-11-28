@@ -1,4 +1,4 @@
-﻿cmake_minimum_required (VERSION 3.29.5)
+﻿cmake_minimum_required (VERSION 3.10)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
