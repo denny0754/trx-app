@@ -33,7 +33,7 @@ public:
 
     virtual void OnRender() { };
 
-    virtual void OnUpdate(float delta) { };
+    virtual void OnUpdate(double delta) { };
 
     virtual void OnShutdown() { };
 

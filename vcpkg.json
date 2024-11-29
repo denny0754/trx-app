@@ -12,6 +12,10 @@
       "name": "imgui",
       "version>=": "1.91.5",
       "features": [ "glfw-binding", "opengl3-binding" ]
+    },
+    {
+      "name": "boost-regex",
+      "version>=": "1.86.0"
     }
   ]
 }

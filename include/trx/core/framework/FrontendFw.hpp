@@ -23,6 +23,9 @@
 #include <trx/core/framework/Framework.hpp>
 #include <trx/core/ui/LayerStack.hpp>
 
+/* External Headers */
+#include <GLFW/glfw3.h>
+
 /* Standard Headers */
 #include <memory>
 #include <vector>

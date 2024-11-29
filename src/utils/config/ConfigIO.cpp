@@ -1,6 +1,9 @@
 /* Project Headers */
 #include <trx/utils/config/ConfigIO.hpp>
 
+/* External Headers */
+#include <boost/regex.hpp>
+
 /* Standard Headers */
 #include <sstream>
 #include <string>
@@ -9,22 +12,23 @@
 namespace trx
 {
 
+const static boost::regex SECTION_RGX("\[[a-zA-Z0-9-_]+\]");
+const static boost::regex KEYVALUE_PAIR_RGX("([A-Za-z0-9_]+)\s*=\s*(['\"])* ([A - Za - z0 - 9_]).*\2 + ");
+const static boost::regex COMMENT_RGX("^\s*#.*");
+
 bool ConfigIO::IsEntry(const std::string& buf)
 {
-    //!TODO: Regex matching for entries
-    return false;
+    return boost::regex_match(buf, KEYVALUE_PAIR_RGX);
 }
 
 bool ConfigIO::IsSection(const std::string& buf)
 {
-    //!TODO: Regex matching for sections
-    return false;
+    return boost::regex_match(buf, SECTION_RGX);
 }
 
 bool ConfigIO::IsComment(const std::string& buf)
 {
-    //!TODO: Regex matching for comments
-    return false;
+    return boost::regex_match(buf, COMMENT_RGX);
 }
 
 ConfigEntry ConfigIO::ParseEntry(const std::string& entry_str)
@@ -34,9 +38,9 @@ ConfigEntry ConfigIO::ParseEntry(const std::string& entry_str)
     std::string entry_key = std::string();
     std::string entry_value = std::string();
 
-    //!TODO: Remove spaces before and after the '=' delimiter.
-    //!TODO: Remove spaces on the key value.
     entry_key = entry_str.substr(0, entry_str.find_first_of('='));
+    entry_key.erase(std::remove(entry_key.begin(), entry_key.end(), ' '), entry_key.end());
+    
     entry_value = entry_str.substr(entry_str.find_first_of('=') + 1);
 
     entry.SetKey(entry_key);
@@ -119,7 +123,15 @@ std::string ConfigIO::ConvertToString(const Config& config)
 void ConfigIO::WriteFile(const Config& config, const std::filesystem::path& file)
 {
     std::string config_stream = ConfigIO::ConvertToString(config);
-    //! TODO: Open the file and write `config_stream` to it in truncate mode. 
+    std::ofstream file_hndl(file, std::ios::out | std::ios::ate);
+    if(!file_hndl)
+    {
+        return;
+    }
+
+    file_hndl << config_stream;
+
+    file_hndl.close();
 }
 
 } // ns trx

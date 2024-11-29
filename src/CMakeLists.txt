@@ -28,6 +28,7 @@ find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
+find_package(boost_regex CONFIG REQUIRED)
 
 target_link_libraries(
 	TRXAPP
@@ -37,4 +38,5 @@ target_link_libraries(
 	glfw
 	opengl32
 	imgui::imgui
+	Boost::regex
 )
