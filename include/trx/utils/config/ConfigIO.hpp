@@ -20,8 +20,6 @@
 
 /* Project Headers */
 #include <trx/utils/config/Config.hpp>
-#include <trx/utils/config/ConfigParser.hpp>
-#include <trx/utils/config/ConfigReader.hpp>
 #include <trx/utils/config/ConfigWriter.hpp>
 
 /* Standard Headers */
@@ -33,9 +31,21 @@ namespace trx
 class ConfigIO
 {
 public:
-    static Config ReadFromFile(const std::filesystem::path& file);
+	static bool IsEntry(const std::string& buf);
 
-    static void WriteToFile(const Config& config, const std::filesystem::path& file);
+	static bool IsSection(const std::string& buf);
+
+	static bool IsComment(const std::string& buf);
+
+	static ConfigEntry ParseEntry(const std::string& entry_str);
+
+    static Config ParseFile(const std::filesystem::path& file);
+
+	static Config ParseString(const std::string& buf);
+
+	static std::string ConvertToString(const Config& config);
+
+    static void WriteFile(const Config& config, const std::filesystem::path& file);
 };
 
 } // ns trx

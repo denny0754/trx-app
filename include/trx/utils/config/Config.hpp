@@ -28,19 +28,35 @@ class Config
 {
 public:
     using ConfigSectionMap = std::unordered_map<std::string, ConfigSection>;
-    using iterator = ConfigSection::iterator;
-    using const_iterator = ConfigSection::const_iterator;
+    using iterator = ConfigSectionMap::iterator;
+    using const_iterator = ConfigSectionMap::const_iterator;
 
 public:
     Config() = default;
 
-    Config(const std::string& section_key, std::initializer_list<ConfigSection> entries = { });
+    Config(const std::string& section_key, std::initializer_list<ConfigSection> sections = { });
 
-    ConfigSection& At(const std::string& entry_key);
+	bool exist(const std::string& section_key);
 
-    iterator Find(const std::string& entry_key);
+    ConfigSection& at(const std::string& section_key);
 
-    ConfigSection& operator[](const std::string& entry_key);
+    iterator find(const std::string& section_key);
+
+	iterator begin();
+
+	iterator begin(size_t i);
+
+	const_iterator begin() const;
+
+	iterator end();
+
+	const_iterator end() const;
+
+	const_iterator cbegin() const;
+
+	const_iterator cend() const;
+
+    ConfigSection& operator[](const std::string& section_key);
 
 private:
     ConfigSectionMap m_sections;

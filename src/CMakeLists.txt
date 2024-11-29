@@ -10,7 +10,6 @@ add_executable (
 	"core/framework/Framework.cpp"
 	"core/framework/FrontendFw.cpp"
 
-	"core/ui/window/Window.cpp"
 	"core/ui/Layer.cpp"
 	"core/ui/LayerStack.cpp"
 

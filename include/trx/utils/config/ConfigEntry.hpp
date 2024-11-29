@@ -31,6 +31,10 @@ public:
 
     ConfigEntry(const std::string& key, const std::string& value);
 
+    ConfigEntry(ConfigEntry& entry);
+
+    ConfigEntry(ConfigEntry&& entry);
+
     void SetKey(const std::string& key);
 
     const std::string& GetKey() const;
@@ -38,6 +42,12 @@ public:
     void SetValue(const std::string& value);
 
     const std::string& GetValue() const;
+
+    ConfigEntry& operator=(ConfigEntry& entry);
+
+    bool operator==(ConfigEntry& entry);
+
+    bool operator!=(ConfigEntry& entry);
 
 private:
     /**

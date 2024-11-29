@@ -37,16 +37,34 @@ public:
 public:
     ConfigSection() = default;
 
-    ConfigSection(const std::string& section_key, std::initializer_list<ConfigEntry> entries = { });
+    ConfigSection(const std::string& section_key, const std::initializer_list<ConfigEntry>& entries = { });
 
-    ConfigEntry& At(const std::string& entry_key);
+    ConfigEntry& at(const std::string& entry_key);
 
-    iterator Find(const std::string& entry_key);
+    iterator find(const std::string& entry_key);
+
+	iterator begin();
+
+	iterator begin(size_t bucket);
+
+	const_iterator begin() const;
+
+	iterator end();
+
+	const_iterator end() const;
+
+	const_iterator cbegin() const;
+
+	const_iterator cend() const;
+
+	void emplace(const ConfigEntry& entry);
 
     ConfigEntry& operator[](const std::string& entry_key);
 
 private:
     ConfigEntryMap m_entries;
+
+	std::string m_sectionKey;
 };
 
 } // ns trx
