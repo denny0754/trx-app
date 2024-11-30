@@ -22,9 +22,11 @@
 /* Project Headers */
 #include <trx/core/framework/Framework.hpp>
 #include <trx/core/ui/LayerStack.hpp>
+#include <trx/utils/config/Config.hpp>
 
 /* External Headers */
 #include <GLFW/glfw3.h>
+#include <imgui.h>
 
 /* Standard Headers */
 #include <memory>
@@ -47,11 +49,13 @@ public:
 	void Restart() override;
 
 private:
-	// Window m_window;
-
 	GLFWwindow* m_nativeWindow;
 
+	ImGuiIO m_imguiContext;
+
 	LayerStack m_layerStack;
+
+	Config m_config;
 };
 
 } // ns trx
