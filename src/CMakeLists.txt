@@ -14,6 +14,11 @@ add_executable (
 	"core/ui/LayerStack.cpp"
 
 	"utils/logging/LogManager.cpp"
+
+	"utils/config/ConfigEntry.cpp"
+	"utils/config/ConfigSection.cpp"
+	"utils/config/Config.cpp"
+	"utils/config/ConfigIO.cpp"
 )
 
 set_target_properties(TRXAPP PROPERTIES

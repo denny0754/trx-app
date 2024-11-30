@@ -31,7 +31,7 @@ public:
 
     ConfigEntry(const std::string& key, const std::string& value);
 
-    ConfigEntry(ConfigEntry& entry);
+    ConfigEntry(const ConfigEntry& entry);
 
     ConfigEntry(ConfigEntry&& entry);
 
@@ -45,9 +45,21 @@ public:
 
     ConfigEntry& operator=(ConfigEntry& entry);
 
+    ConfigEntry& operator=(ConfigEntry entry);
+
     bool operator==(ConfigEntry& entry);
 
     bool operator!=(ConfigEntry& entry);
+
+    operator int();
+
+    operator unsigned int();
+
+    operator float();
+
+    operator double();
+
+    operator bool();
 
 private:
     /**

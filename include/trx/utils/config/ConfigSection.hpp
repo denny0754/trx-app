@@ -37,7 +37,18 @@ public:
 public:
     ConfigSection() = default;
 
-    ConfigSection(const std::string& section_key, const std::initializer_list<ConfigEntry>& entries = { });
+    ConfigSection(const std::string& section_key, std::initializer_list<ConfigEntry> entries);
+
+	const std::string& GetKey() const;
+
+	/**
+	 * 
+	 * This method returns an entry with the given key
+	 * and, if not found, the fallback entry is returned.
+	 * The entry will also be created.
+	 * 
+	 **/
+	ConfigEntry& get(std::string key, ConfigEntry fallback_entry = ConfigEntry());
 
     ConfigEntry& at(const std::string& entry_key);
 

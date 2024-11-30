@@ -34,9 +34,17 @@ public:
 public:
     Config() = default;
 
-    Config(const std::string& section_key, std::initializer_list<ConfigSection> sections = { });
+    Config(std::initializer_list<ConfigSection> sections);
 
 	bool exist(const std::string& section_key);
+
+	/**
+	 * 
+	 * This method returns a section with the given key
+	 * and, if not found, the fallback section is returned.
+	 * 
+	 **/
+	ConfigSection& get(std::string key, const ConfigSection& fallback_section);
 
     ConfigSection& at(const std::string& section_key);
 

@@ -4,10 +4,27 @@
 namespace trx
 {
 
-ConfigSection::ConfigSection(const std::string& section_key, const std::initializer_list<ConfigEntry>& entries = { })
+ConfigSection::ConfigSection(const std::string& section_key, std::initializer_list<ConfigEntry> entries)
 {
     m_sectionKey = section_key;
-    m_entries = ConfigEntryMap(entries.begin(), entries.end());
+    for(auto entry : entries)
+    {
+        m_entries[entry.GetKey()] = ConfigEntry(entry);   
+    }
+}
+
+const std::string& ConfigSection::GetKey() const
+{
+    return m_sectionKey;
+}
+
+ConfigEntry& ConfigSection::get(std::string key, ConfigEntry fallback_entry)
+{
+    if(m_entries.find(key) == m_entries.end())
+    {
+        m_entries[key] = ConfigEntry(fallback_entry);
+    }
+    return m_entries.at(key);
 }
 
 ConfigEntry& ConfigSection::at(const std::string& entry_key)

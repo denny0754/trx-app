@@ -12,22 +12,21 @@
 namespace trx
 {
 
-const static boost::regex SECTION_RGX("\[[a-zA-Z0-9-_]+\]");
-const static boost::regex KEYVALUE_PAIR_RGX("([A-Za-z0-9_]+)\s*=\s*(['\"])* ([A - Za - z0 - 9_]).*\2 + ");
-const static boost::regex COMMENT_RGX("^\s*#.*");
-
 bool ConfigIO::IsEntry(const std::string& buf)
 {
+    static boost::regex KEYVALUE_PAIR_RGX = boost::regex("([A-Za-z0-9_]+)\\s*=\\s*(['\"])* ([A - Za - z0 - 9_]).*\\2 + ");
     return boost::regex_match(buf, KEYVALUE_PAIR_RGX);
 }
 
 bool ConfigIO::IsSection(const std::string& buf)
 {
+    static boost::regex SECTION_RGX = boost::regex("[[a-zA-Z0-9-_]+]");
     return boost::regex_match(buf, SECTION_RGX);
 }
 
 bool ConfigIO::IsComment(const std::string& buf)
 {
+    static boost::regex COMMENT_RGX = boost::regex("^\\s*#.*");
     return boost::regex_match(buf, COMMENT_RGX);
 }
 
@@ -53,7 +52,7 @@ Config ConfigIO::ParseFile(const std::filesystem::path& file)
     std::ifstream file_hndl = std::ifstream(file);
     if(!file_hndl)
     {
-        return ConfigIO::ParseString("");
+        return Config();
     }
 
     std::stringstream sbuf = std::stringstream();
@@ -97,11 +96,12 @@ Config ConfigIO::ParseString(const std::string& buf)
                 ConfigEntry entry = ConfigIO::ParseEntry(line_buf);
                 if(config.find(curr_section_key) != config.end())
                 {
-                    config.at(curr_section_key).emplace(entry);
+                    config.at(curr_section_key)[entry.GetKey()] = ConfigEntry(entry);
                 }
             }
         }
     }
+    return config;
 }
 
 std::string ConfigIO::ConvertToString(const Config& config)
