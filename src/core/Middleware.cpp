@@ -32,6 +32,8 @@ Middleware::ListenerHandle Middleware::RegisterListener(EventKey event_key, Midd
 
     m_listenerKeys[event_key].push_back(m_currentHandle);
     m_listenersHandle[m_currentHandle] = listener;
+
+    return m_currentHandle;
 }
 
 void Middleware::UnregisterListener(EventKey event_key, ListenerHandle handle)
