@@ -112,8 +112,14 @@ void FrontendFw::Update()
 void FrontendFw::Shutdown()
 {
     m_layerStack.Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
+    glfwDestroyWindow(m_nativeWindow);
     glfwTerminate();
+
+    m_nativeWindow = nullptr;
 }
 
 void FrontendFw::Restart()

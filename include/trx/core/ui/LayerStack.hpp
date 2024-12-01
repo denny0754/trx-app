@@ -23,6 +23,7 @@
 
 /* Standard Headers */
 #include <unordered_map>
+#include <vector>
 
 namespace trx
 {
@@ -32,7 +33,11 @@ class LayerStack
 public:
     LayerStack();
 
+	void PushOverlay(Layer* layer);
+
     void PushLayer(Layer* layer);
+
+	void PopOverlay(const std::string& overlay_name);
 
     void PopLayer(const std::string& layer_name);
 
@@ -43,7 +48,9 @@ public:
     void Shutdown();
 
 private:
-	std::unordered_map<std::string, Layer*> m_layers;
+	std::vector<Layer*> m_layers;
+
+	size_t m_layerOverlayIndex;
 };
 
 } // ns trx

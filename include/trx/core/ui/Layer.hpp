@@ -27,16 +27,52 @@ namespace trx
 class Layer
 {
 public:
+	/**
+	 * 
+	 * Constructs the layer with a layer name.
+	 * 
+	 * @param layer_name : std::string The name of the layer
+	 * 
+	 **/
 	Layer(const std::string& layer_name);
 
+	/**
+	 * 
+	 * Initializes the Layer.
+	 * 
+	 **/
     virtual void OnInitialize() { };
 
+	/**
+	 * 
+	 * Renders the layer.
+	 * 
+	 **/
     virtual void OnRender() { };
 
+	/**
+	 * 
+	 * Updates the layer
+	 * 
+	 * @param delta : double The delta time from the last frame.
+	 * 
+	 **/
     virtual void OnUpdate(double delta) { };
 
+	/**
+	 * 
+	 * Shutsdown/destroys the layer.
+	 * 
+	 **/
     virtual void OnShutdown() { };
 
+	/**
+	 * 
+	 * Returns the name of the Layer.
+	 * 
+	 * @return The name of the layer.
+	 * 
+	 **/
 	const std::string& GetLayerName() const;
 
 protected:
