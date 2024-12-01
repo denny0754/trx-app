@@ -15,8 +15,8 @@ void LayerStack::PushOverlay(Layer* overlay)
     auto overlay_it = std::find_if(
         m_layers.begin(),
         m_layers.end(),
-        [overlay](Layer& _overlay) {
-            return _overlay.GetLayerName() == overlay->GetLayerName();
+        [overlay](Layer* _overlay) {
+            return _overlay->GetLayerName() == overlay->GetLayerName();
         }
     );
 
@@ -42,8 +42,8 @@ void LayerStack::PushLayer(Layer* layer)
     auto layer_it = std::find_if(
         m_layers.begin(),
         m_layers.end(),
-        [layer](Layer& _layer) {
-            return _layer.GetLayerName() == layer->GetLayerName();
+        [layer](Layer* _layer) {
+            return _layer->GetLayerName() == layer->GetLayerName();
         }
     );
 
@@ -63,8 +63,8 @@ void LayerStack::PopOverlay(const std::string& overlay_name)
     auto overlay_it = std::find_if(
         m_layers.begin(),
         m_layers.end(),
-        [overlay_name](Layer& _overlay) {
-            return _overlay.GetLayerName() == overlay_name;
+        [overlay_name](Layer* _overlay) {
+            return _overlay->GetLayerName() == overlay_name;
         }
     );
 
@@ -80,8 +80,8 @@ void LayerStack::PopLayer(const std::string& layer_name)
     auto layer_it = std::find_if(
         m_layers.begin(),
         m_layers.end(),
-        [layer_name](Layer& _layer) {
-            return _layer.GetLayerName() == layer_name;
+        [layer_name](Layer* _layer) {
+            return _layer->GetLayerName() == layer_name;
         }
     );
 
