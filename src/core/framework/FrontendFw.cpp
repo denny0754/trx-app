@@ -3,6 +3,8 @@
 #include <trx/core/Middleware.hpp>
 #include <trx/utils/logging/LogManager.hpp>
 #include <trx/utils/config/ConfigIO.hpp>
+#include <trx/app/ui/MenuOverlay.hpp>
+#include <trx/app/ui/SessionSelectorLayer.hpp>
 
 /* External Headers */
 #include <imgui_impl_glfw.h>
@@ -68,7 +70,8 @@ void FrontendFw::Initialize()
     m_layerStack = LayerStack();
 
     /* Begin of push of all Layers */
-
+    m_layerStack.PushOverlay(new MenuOverlay());
+    m_layerStack.PushLayer(new SessionSelectorLayer());
     /* End of push of all Layers */
 
     m_isReady = true;

@@ -19,6 +19,9 @@ add_executable (
 	"utils/config/ConfigSection.cpp"
 	"utils/config/Config.cpp"
 	"utils/config/ConfigIO.cpp"
+
+	"app/ui/MenuOverlay.cpp"
+	"app/ui/SessionSelectorLayer.cpp"
 )
 
 set_target_properties(TRXAPP PROPERTIES
