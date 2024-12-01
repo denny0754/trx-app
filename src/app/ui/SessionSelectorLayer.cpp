@@ -28,6 +28,11 @@ void SessionSelectorLayer::OnRender()
     ImGui::Button("Local Session(DB)", ImVec2(150, 50));
     ImGui::Button("Remote Session(DB)", ImVec2(150, 50));
     ImGui::End();
+
+    ImGui::Begin("Session Selector Test");
+    ImGui::Button("Local Session(DB)", ImVec2(150, 50));
+    ImGui::Button("Remote Session(DB)", ImVec2(150, 50));
+    ImGui::End();
 }
 
 void SessionSelectorLayer::OnUpdate(double delta)

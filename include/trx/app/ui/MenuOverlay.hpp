@@ -40,7 +40,7 @@ public:
 private:
     struct MenuData
     {
-        bool M_I_ExitClicked;
+        bool M_I_ExitClicked = false;
     };
 
     MenuData m_menuRefData;

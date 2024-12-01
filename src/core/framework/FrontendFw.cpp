@@ -32,6 +32,9 @@ void FrontendFw::Initialize()
         return;
     }
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+
     m_nativeWindow = glfwCreateWindow(
         static_cast<int>(window_settings.get("WINDOW_WIDTH")),
         static_cast<int>(window_settings.get("WINDOW_HEIGHT")),
@@ -51,15 +54,28 @@ void FrontendFw::Initialize()
     /* Setting the VSYNC flag */
     glfwSwapInterval((bool)window_settings.get("ENABLE_VSYNC"));
 
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
     m_imguiContext = ImGui::GetIO();
     
     // Enables keyboard controls
     m_imguiContext.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    m_imguiContext.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    m_imguiContext.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    m_imguiContext.ConfigDockingNoSplit = false;
+    m_imguiContext.ConfigViewportsNoTaskBarIcon = false;
 
     // Sets the ImGui theme to dark by default.
     ImGui::StyleColorsDark();
+
+    // Making some tweaks to the ImGui windows
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (m_imguiContext.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
 
     // Initializing the native GLFW window to be used by the ImGui context.
     ImGui_ImplGlfw_InitForOpenGL(m_nativeWindow, true);
@@ -100,6 +116,9 @@ void FrontendFw::Update()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
+    ImGuiID dockspace_id = ImGui::GetID("ROOT_DOCKSPACE");
+    ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), ImGuiDockNodeFlags_PassthruCentralNode);
+
     m_layerStack.Render();
 
     ImGui::Render();
@@ -108,7 +127,15 @@ void FrontendFw::Update()
     glClearColor(.5f, .5f, .5f, 0.0f);
     
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    
+
+    if (m_imguiContext.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        GLFWwindow* backup_current_context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backup_current_context);
+    }
+
     glfwSwapBuffers(m_nativeWindow);
 }
 
