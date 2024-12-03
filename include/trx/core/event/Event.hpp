@@ -31,14 +31,24 @@ namespace trx
 class Event
 {
 public:
-    Event(EventData* event_data, EventKey event_key);
+    Event(EventData* event_data, EventKey event_key)
+		: m_eventData(event_data), m_eventKey(event_key)
+	{
 
-    EventData* GetEventData();
+	}
 
-    const EventKey GetEventKey() const;
+    inline EventData* GetEventData()
+	{
+		return m_eventData;
+	}
+
+    inline const EventKey GetEventKey() const
+	{
+		return m_eventKey;
+	}
 
 	template<typename Type>
-	const Type* ToType() const
+	inline const Type* ToType() const
 	{
 		return static_cast<const Type*>(this);
 	}

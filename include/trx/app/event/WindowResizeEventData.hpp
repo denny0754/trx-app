@@ -27,11 +27,21 @@ namespace trx
 class WindowResizeEventData : public EventData
 {
 public:
-    WindowResizeEventData(int width, int height);
+    inline WindowResizeEventData(int width, int height)
+		: EventData(), m_winWidth(width), m_winHeight(height)
+	{
 
-    int GetWidth() const;
+	}
 
-    int GetHeight() const;
+    inline int GetWidth() const
+	{
+		return m_winWidth;
+	}
+
+    inline int GetHeight() const
+	{
+		return m_winHeight;
+	}
 
 private:
     int m_winWidth;

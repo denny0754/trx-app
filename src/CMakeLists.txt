@@ -5,8 +5,6 @@ add_executable (
  	"core/Application.cpp"
 	"core/Middleware.cpp"
 
-	"core/event/Event.cpp"
-
 	"core/framework/Framework.cpp"
 	"core/framework/FrontendFw.cpp"
 
@@ -22,9 +20,6 @@ add_executable (
 
 	"app/ui/MenuOverlay.cpp"
 	"app/ui/SessionSelectorLayer.cpp"
-
-	"app/event/WindowResizeEvent.cpp"
-	"app/event/WindowResizeEventData.cpp"
 )
 
 set_target_properties(TRXAPP PROPERTIES

@@ -28,7 +28,11 @@ namespace trx
 class WindowResizeEvent : public Event
 {
 public:
-    WindowResizeEvent(WindowResizeEventData* new_window_size);
+    inline WindowResizeEvent(WindowResizeEventData* new_window_size)
+		: Event(new_window_size, EventKey::WINDOW_RESIZE_EVENT)
+	{
+
+	}
     
 };
 
