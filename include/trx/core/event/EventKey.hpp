@@ -21,9 +21,28 @@
 namespace trx
 {
 
-enum EventKey
+enum EventKey : size_t
 {
-    APPLICATION_SHOULD_CLOSE = 0x0000000000000001
+	/*
+		Application Events
+	*/
+    APPLICATION_SHOULD_CLOSE = 0x0000000000000001,
+
+	/*
+		Window Events
+	*/
+	WINDOW_RESIZE_EVENT		 = 0x0000000000001000,
+
+	/*
+		Layer Events
+	*/
+	PUSH_LAYER_EVENT		 = 0x0000000000000003,
+	POP_LAYER_EVENT		     = 0x0000000000000004,
+
+	/*
+		Special Request
+	*/
+	REQUEST_WINDOW_SIZE		 = 0xF000000000000001
 };
 
 } // ns trx

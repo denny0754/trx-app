@@ -25,6 +25,12 @@ class EventData
 {
 public:
     EventData() = default;
+
+	template<typename Type>
+	const Type* ToType() const
+	{
+		return static_cast<const Type*>(this);
+	}
 };
 
 } // ns trx

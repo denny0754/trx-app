@@ -26,7 +26,7 @@ namespace trx
 
 class Layer
 {
-public:
+public:	
 	/**
 	 * 
 	 * Constructs the layer with a layer name.
@@ -74,6 +74,8 @@ public:
 	 * 
 	 **/
 	const std::string& GetLayerName() const;
+
+	~Layer() { OnShutdown(); }
 
 protected:
 	std::string m_layerName;

@@ -1,6 +1,9 @@
 /* Project Headesr */
 #include <trx/app/ui/MenuOverlay.hpp>
 #include <trx/core/Middleware.hpp>
+#include <trx/utils/logging/LogManager.hpp>
+#include <trx/app/event/LayerEvent.hpp>
+#include <trx/app/ui/SessionSelectorLayer.hpp>
 
 /* External Headers */
 #include <imgui.h>
@@ -24,13 +27,12 @@ void MenuOverlay::OnRender()
     if(ImGui::BeginMainMenuBar())
     {
         // `File` Menu
-        if(ImGui::BeginMenu("File"))
+        if(ImGui::BeginMenu("Session"))
         {
-            // Add functionalities to the menu items.
-            if(ImGui::MenuItem("Save")) { }
 
+            m_menuRefData.M_I_NewSessionClicked = ImGui::MenuItem("New session");
+            m_menuRefData.M_I_CloseCurrentSessionClicked = ImGui::MenuItem("Close current session");
             m_menuRefData.M_I_ExitClicked = ImGui::MenuItem("Exit...");
-
             ImGui::EndMenu();
         }
 
@@ -69,6 +71,13 @@ void MenuOverlay::OnUpdate(double delta)
     if(m_menuRefData.M_I_ExitClicked)
     {
         Middleware::Get().PushEvent(new Event(nullptr, EventKey::APPLICATION_SHOULD_CLOSE));
+    }
+    if(m_menuRefData.M_I_NewSessionClicked)
+    {
+        Middleware::Get().PushEvent(
+            new LayerEvent(new LayerEventData(new SessionSelectorLayer()), EventKey::PUSH_LAYER_EVENT)
+        );
+        m_menuRefData.M_I_NewSessionClicked = false;
     }
 }
 

@@ -40,6 +40,8 @@ public:
 private:
     struct MenuData
     {
+		bool M_I_NewSessionClicked = false;
+		bool M_I_CloseCurrentSessionClicked = false;
         bool M_I_ExitClicked = false;
     };
 

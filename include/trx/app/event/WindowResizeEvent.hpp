@@ -19,34 +19,17 @@
 #pragma once
 
 /* Project Headers */
-#include <trx/core/event/EventData.hpp>
-#include <trx/core/event/EventKey.hpp>
-
-/* Standard Headers */
-#include <cstdint>
+#include <trx/core/event/Event.hpp>
+#include <trx/app/event/WindowResizeEventData.hpp>
 
 namespace trx
 {
 
-class Event
+class WindowResizeEvent : public Event
 {
 public:
-    Event(EventData* event_data, EventKey event_key);
-
-    EventData* GetEventData();
-
-    const EventKey GetEventKey() const;
-
-	template<typename Type>
-	const Type* ToType() const
-	{
-		return static_cast<const Type*>(this);
-	}
-
-protected:
-    EventData* m_eventData;
-
-    EventKey m_eventKey;
+    WindowResizeEvent(WindowResizeEventData* new_window_size);
+    
 };
 
-} // ns trx
+} // ns

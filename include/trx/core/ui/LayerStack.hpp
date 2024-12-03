@@ -20,6 +20,7 @@
 
 /* Project Headers */
 #include <trx/core/ui/Layer.hpp>
+#include <trx/app/event/LayerEvent.hpp>
 
 /* Standard Headers */
 #include <unordered_map>
@@ -33,9 +34,9 @@ class LayerStack
 public:
     LayerStack();
 
-	void PushOverlay(Layer* layer);
+	void PushOverlay(std::shared_ptr<Layer> layer);
 
-    void PushLayer(Layer* layer);
+    void PushLayer(std::shared_ptr<Layer> layer);
 
 	void PopOverlay(const std::string& overlay_name);
 
@@ -47,8 +48,13 @@ public:
 
     void Shutdown();
 
+protected:
+	void OnLayerEvent(Event* event);
+
+	std::vector<std::shared_ptr<Layer>>::iterator FindLayer(const std::string& layer_name);
+
 private:
-	std::vector<Layer*> m_layers;
+	std::vector<std::shared_ptr<Layer>> m_layers;
 
 	size_t m_layerOverlayIndex;
 };

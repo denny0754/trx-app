@@ -20,33 +20,36 @@
 
 /* Project Headers */
 #include <trx/core/event/EventData.hpp>
-#include <trx/core/event/EventKey.hpp>
+#include <trx/core/ui/Layer.hpp>
 
 /* Standard Headers */
-#include <cstdint>
+#include <memory>
 
 namespace trx
 {
 
-class Event
+class LayerEventData : public EventData
 {
 public:
-    Event(EventData* event_data, EventKey event_key);
+    LayerEventData(Layer* layer, const std::string& layer_name = "")
+        : EventData(), m_layer(layer), m_layerName(layer_name)
+    {
+    }
 
-    EventData* GetEventData();
+    Layer* GetLayer() inline const
+    {
+        return m_layer;
+    }
 
-    const EventKey GetEventKey() const;
+    const std::string& GetLayerName() const
+    {
+        return m_layerName;
+    }
 
-	template<typename Type>
-	const Type* ToType() const
-	{
-		return static_cast<const Type*>(this);
-	}
+private:
+    Layer* m_layer;
 
-protected:
-    EventData* m_eventData;
-
-    EventKey m_eventKey;
+    std::string m_layerName;
 };
 
-} // ns trx
+};

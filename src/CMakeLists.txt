@@ -22,6 +22,9 @@ add_executable (
 
 	"app/ui/MenuOverlay.cpp"
 	"app/ui/SessionSelectorLayer.cpp"
+
+	"app/event/WindowResizeEvent.cpp"
+	"app/event/WindowResizeEventData.cpp"
 )
 
 set_target_properties(TRXAPP PROPERTIES

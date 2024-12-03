@@ -51,7 +51,7 @@ public:
 private:
 	GLFWwindow* m_nativeWindow;
 
-	ImGuiIO m_imguiContext;
+	// ImGuiIO& m_imguiContext;
 
 	LayerStack m_layerStack;
 

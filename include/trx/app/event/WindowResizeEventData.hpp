@@ -20,33 +20,23 @@
 
 /* Project Headers */
 #include <trx/core/event/EventData.hpp>
-#include <trx/core/event/EventKey.hpp>
-
-/* Standard Headers */
-#include <cstdint>
 
 namespace trx
 {
 
-class Event
+class WindowResizeEventData : public EventData
 {
 public:
-    Event(EventData* event_data, EventKey event_key);
+    WindowResizeEventData(int width, int height);
 
-    EventData* GetEventData();
+    int GetWidth() const;
 
-    const EventKey GetEventKey() const;
+    int GetHeight() const;
 
-	template<typename Type>
-	const Type* ToType() const
-	{
-		return static_cast<const Type*>(this);
-	}
+private:
+    int m_winWidth;
 
-protected:
-    EventData* m_eventData;
-
-    EventKey m_eventKey;
+    int m_winHeight;
 };
 
-} // ns trx
+} // ns

@@ -6,6 +6,9 @@
 #include <trx/app/ui/MenuOverlay.hpp>
 #include <trx/app/ui/SessionSelectorLayer.hpp>
 
+#include <trx/app/event/WindowResizeEvent.hpp>
+#include <trx/app/event/WindowResizeEventData.hpp>
+
 /* External Headers */
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -57,21 +60,20 @@ void FrontendFw::Initialize()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
-    m_imguiContext = ImGui::GetIO();
-    
+    // m_imguiContext = ImGui::GetIO();
+    ImGuiIO& io = ImGui::GetIO();
+
     // Enables keyboard controls
-    m_imguiContext.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    m_imguiContext.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    m_imguiContext.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-    m_imguiContext.ConfigDockingNoSplit = false;
-    m_imguiContext.ConfigViewportsNoTaskBarIcon = false;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
     // Sets the ImGui theme to dark by default.
     ImGui::StyleColorsDark();
 
     // Making some tweaks to the ImGui windows
     ImGuiStyle& style = ImGui::GetStyle();
-    if (m_imguiContext.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         style.WindowRounding = 0.0f;
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
@@ -83,18 +85,35 @@ void FrontendFw::Initialize()
     // Initializing the version of OpenGL
     ImGui_ImplOpenGL3_Init("#version 130");
 
-    m_layerStack = LayerStack();
+    glfwSetWindowSizeCallback(m_nativeWindow, [](GLFWwindow* window, int width, int height){
+        Middleware::Get().PushEvent(new WindowResizeEvent(new WindowResizeEventData(width, height)));
+    });
+
+    // m_layerStack = LayerStack();
 
     /* Begin of push of all Layers */
-    m_layerStack.PushOverlay(new MenuOverlay());
-    m_layerStack.PushLayer(new SessionSelectorLayer());
+    m_layerStack.PushOverlay(std::make_unique<MenuOverlay>());
+    m_layerStack.PushLayer(std::make_unique<SessionSelectorLayer>());
     /* End of push of all Layers */
 
     m_isReady = true;
+
+    // We push the resize event so that all Overlays and Layers that need the size of the window
+    // will have it before the first render call.
+    Middleware::Get().PushEvent(
+        new WindowResizeEvent(
+            new WindowResizeEventData(
+                static_cast<int>(window_settings.get("WINDOW_WIDTH")),
+                static_cast<int>(window_settings.get("WINDOW_HEIGHT"))
+            )
+        )
+    );
 }
 
 void FrontendFw::Update()
 {
+    ImGuiIO& io = ImGui::GetIO();
+    
     if(glfwWindowShouldClose(m_nativeWindow))
     {
         Middleware::Get().PushEvent(new Event(nullptr, EventKey::APPLICATION_SHOULD_CLOSE));
@@ -115,10 +134,8 @@ void FrontendFw::Update()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
-    ImGuiID dockspace_id = ImGui::GetID("ROOT_DOCKSPACE");
-    ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), ImGuiDockNodeFlags_PassthruCentralNode);
-
+    ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
+    
     m_layerStack.Render();
 
     ImGui::Render();
@@ -128,7 +145,7 @@ void FrontendFw::Update()
     
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    if (m_imguiContext.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         GLFWwindow* backup_current_context = glfwGetCurrentContext();
         ImGui::UpdatePlatformWindows();

@@ -20,6 +20,14 @@
 
 /* Project Headers */
 #include <trx/core/ui/Layer.hpp>
+#include <trx/app/event/WindowResizeEvent.hpp>
+#include <trx/core/Middleware.hpp>
+
+/* External Headers */
+#include <imgui.h>
+
+/* Standard Headers */
+#include <vector>
 
 namespace trx
 {
@@ -36,6 +44,13 @@ public:
     void OnUpdate(double delta) override;
 
     void OnShutdown() override;
+
+protected:
+	void OnWindowResize(Event* event);
+
+private:
+	ImVec2 m_selectorPivotPos;
+	ImVec2 m_selectorWinSize;
 };
 
 } // ns trx
