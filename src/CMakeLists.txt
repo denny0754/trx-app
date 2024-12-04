@@ -5,7 +5,6 @@ add_executable (
  	"core/Application.cpp"
 	"core/Middleware.cpp"
 
-	"core/framework/Framework.cpp"
 	"core/framework/FrontendFw.cpp"
 
 	"core/ui/Layer.cpp"

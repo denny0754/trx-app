@@ -30,7 +30,11 @@ public:
 	 * Initializes the base framework.
 	 * 
 	 **/
-	Framework();
+	Framework()
+		: m_isReady(false)
+	{
+
+	}
 	
 	/**
 	 * 
@@ -74,7 +78,10 @@ public:
 	 * @return True if the Framework has been initialized and ready to
 	 * 		   be used. False otherwise.
 	 **/
-	bool IsReady() const;
+	inline bool IsReady() const
+	{
+		return m_isReady;
+	}
 
 protected:
 	/**
