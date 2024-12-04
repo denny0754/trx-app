@@ -21,7 +21,7 @@ void FrontendFw::Initialize()
     TRX_CREATE_LOGGER("FrontendFw", true, false, "", spdlog::level::level_enum::debug)
     TRX_INF("FrontendFw", "Initializing Frontend Framework...");
 
-    m_config = ConfigIO::ParseFile("./config/frontend.cfg");
+    m_config = ConfigIO::ParseFile("./cfg/frontend.cfg");
 
     ConfigSection& window_settings = m_config.get("WINDOW", ConfigSection("FRONTEND", {
         ConfigEntry("WINDOW_WIDTH", "1280"),
