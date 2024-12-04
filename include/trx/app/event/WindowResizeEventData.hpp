@@ -24,28 +24,67 @@
 namespace trx
 {
 
+/**
+ * 
+ * Defines the data of the Window Size for
+ * the WindowResizeEvent.
+ * 
+ **/
 class WindowResizeEventData : public EventData
 {
 public:
+	/**
+	 * 
+	 * Initializes the new window Width and Height.
+	 * 
+	 * @param width The new width of the Window.
+	 * 
+	 * @param height The new height of the Window.
+	 * 
+	 **/
     inline WindowResizeEventData(int width, int height)
 		: EventData(), m_winWidth(width), m_winHeight(height)
 	{
 
 	}
 
+	/**
+	 * 
+	 * Returns the width of the Window.
+	 * 
+	 * @return The width of the Window.
+	 * 
+	 **/
     inline int GetWidth() const
 	{
 		return m_winWidth;
 	}
 
+	/**
+	 * 
+	 * Returns the height of the Window.
+	 * 
+	 * @return The height of the Window.
+	 * 
+	 **/
     inline int GetHeight() const
 	{
 		return m_winHeight;
 	}
 
 private:
+	/**
+	 * 
+	 * The new width of the Window.
+	 * 
+	 **/
     int m_winWidth;
 
+	/**
+	 * 
+	 * The new height of the Window.
+	 * 
+	 **/
     int m_winHeight;
 };
 

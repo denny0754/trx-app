@@ -24,6 +24,13 @@
 namespace trx
 {
 
+/**
+ * 
+ * This class defines the a base for the implementation
+ * of a custom layer.
+ * All virtual methods are called automatically by the `trx::LayerStack`.
+ * 
+ **/
 class Layer
 {
 public:	
@@ -75,10 +82,21 @@ public:
 	 **/
 	const std::string& GetLayerName() const;
 
-	~Layer() { OnShutdown(); }
+	/**
+	 * 
+	 * Desctructor of Layer.
+	 * Just calls the `OnShutdown` method, which
+	 * should be overridden by the derived class to
+	 * de-initialize its specific components.
+	 * 
+	 **/
+	~Layer()
+	{
+		OnShutdown();
+	}
 
 protected:
 	std::string m_layerName;
 };
 
-} // ns
+} // ns trx

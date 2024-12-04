@@ -25,9 +25,24 @@
 namespace trx
 {
 
+/**
+ * 
+ * Layer Event is a specific event
+ * for the Layer and Layer Stack classes.
+ * 
+ **/
 class LayerEvent : public Event
 {
 public:
+	/**
+	 * 
+	 * Initializes the LayerEvent class.
+	 * 
+	 * @param layer_data The data of the Layer.
+	 * 
+	 * @param layer_event_type The type of layer event.
+	 * 
+	 **/
     LayerEvent(LayerEventData* layer_data, EventKey layer_event_type)
         : Event(layer_data, layer_event_type)
     {

@@ -21,11 +21,43 @@
 namespace trx
 {
 
+/**
+ * 
+ * `EventData` is a pure base class, meaning
+ * that it does not contain any data/member variables.
+ * The actual data should be implemented in the derived
+ * class. 
+ * 
+ **/
 class EventData
 {
 public:
+	/**
+	 * 
+	 * Constructor without parameters for the Event Data class.
+	 * This is a purely base class, as the actual data, if needed
+	 * should be implemented on the derived class.
+	 * 
+	 **/
     EventData() = default;
 
+	/**
+	 * 
+	 * Converts the EventData class instance to
+	 * the given Type.
+	 * 
+	 * @param Type The type of the derived class.
+	 * 
+	 * @return A cast to the derived class.
+	 * 
+	 * @warning
+	 * 
+	 * The `Type` parameter must hold a type that is derived
+	 * from this class.
+	 * 
+	 * Passing an invalid type could throw an exception.
+	 * 
+	 **/
 	template<typename Type>
 	const Type* ToType() const
 	{

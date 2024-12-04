@@ -25,9 +25,22 @@
 namespace trx
 {
 
+/**
+ * 
+ * Defines an event used when the size of
+ * the main window has been changed.
+ * 
+ **/
 class WindowResizeEvent : public Event
 {
 public:
+	/**
+	 * 
+	 * Initializes the event with the new window size data.
+	 * 
+	 * @param new_window_size The data storing the new size of the window.
+	 * 
+	 **/
     inline WindowResizeEvent(WindowResizeEventData* new_window_size)
 		: Event(new_window_size, EventKey::WINDOW_RESIZE_EVENT)
 	{

@@ -24,6 +24,12 @@ namespace trx
 class Framework
 {
 public:
+	/**
+	 * 
+	 * Default constructor.
+	 * Initializes the base framework.
+	 * 
+	 **/
 	Framework();
 	
 	/**
@@ -71,6 +77,18 @@ public:
 	bool IsReady() const;
 
 protected:
+	/**
+	 * 
+	 * Member variable used to flag the framework
+	 * as being ready to be used or not.
+	 * 
+	 * This flag should be used as follow:
+	 * 
+	 * 	* False: if the framework initialization process has failed.
+	 * 
+	 *	* True: if the framework initialization process has finished succesfuly.
+	 * 
+	 **/
 	bool m_isReady;
 };
 

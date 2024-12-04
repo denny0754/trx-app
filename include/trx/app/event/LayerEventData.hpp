@@ -28,27 +28,86 @@
 namespace trx
 {
 
+/**
+ * 
+ * Implementation of the event data for events
+ * of type `trx::LayerEvent`.
+ * 
+ **/
 class LayerEventData : public EventData
 {
 public:
+    /**
+     * 
+     * Initializes the data of the event.
+     * 
+     * @param layer The layer to be managed by the event.
+     *              If the layer is not needed, set it as `nullptr`.
+     * 
+     * @param layer_name The name of the layer to be managed by the event.
+     *                   By default, the name of the layer is set as an empty string.
+     *                   Not all events require solely the name of the event.
+     * 
+     **/
     LayerEventData(Layer* layer, const std::string& layer_name = "")
         : EventData(), m_layer(layer), m_layerName(layer_name)
     {
     }
 
+    /**
+     * 
+     * Returns the raw pointer to the Layer.
+     * 
+     * @return A pointer to the layer.
+     * 
+     * @warning
+     * The lifetime of the layer should be managed by the user.
+     * Currently it is not managed by a smart pointer, but it may
+     * be a possibility in the future.
+     * 
+     **/
     Layer* GetLayer() inline const
     {
         return m_layer;
     }
 
+    /**
+     * 
+     * Returns the name of the layer.
+     * 
+     * @return The name of the layer.
+     * 
+     **/
     const std::string& GetLayerName() const
     {
         return m_layerName;
     }
 
 private:
+    /**
+     * 
+     * The actual layer to be managed by the event.
+     * 
+     * @warning currently it is a raw pointer and the lifetime of
+     * it is not quite safe. In the future
+     * this parameter's type may be changed to a smart pointer,
+     * most probably an `std::shared_ptr` to allow the Owner of the object
+     * to change it whenever needed and to avoid being popped out.
+     * 
+     **/
     Layer* m_layer;
 
+    /**
+     * 
+     * The name of the Layer to be managed on the event.
+     * 
+     * @note
+     * Currently, this parameter is used when events
+     * only need the name of the event.
+     * 
+     * Example: Popping layers only requires the name of the layer.
+     * 
+     **/
     std::string m_layerName;
 };
 
