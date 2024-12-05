@@ -72,6 +72,19 @@ ConfigSection::const_iterator ConfigSection::cend() const
     return m_entries.cend();
 }
 
+void ConfigSection::emplace(const ConfigEntry& entry)
+{
+    if(m_entries.find(entry.GetKey()) != m_entries.end())
+    {
+        m_entries.at(entry.GetKey()) = entry;
+    }
+    else
+    {
+        m_entries[entry.GetKey()] = entry;
+    }
+}
+
+
 ConfigEntry& ConfigSection::operator[](const std::string& entry_key)
 {
     if(m_entries.find(entry_key) == m_entries.end())

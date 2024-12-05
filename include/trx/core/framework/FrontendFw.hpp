@@ -96,6 +96,21 @@ public:
 	 **/
 	void Restart() override;
 
+protected:
+	/**
+	 * 
+	 * Initializes the configuration of the Framework
+	 * by either performing the following:
+	 *
+	 * 	* Reading from file located at `./cfg/frontend.cfg`
+	 * 
+	 * 	* Initializing a default configuration (only if the file does not exists.)
+	 * 
+	 * The second option, will eventually initialize the file itself.
+	 * 
+	 **/
+	void InitializeConfig();
+
 private:
 	/**
 	 * 
