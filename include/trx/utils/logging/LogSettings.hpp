@@ -42,16 +42,52 @@ struct LogSettings
      * 
      * Enables or disables logging to console.
      * 
+     * By default, this is set to `true`.
+     * 
      */
-    bool EnableConsole;
+    bool EnableConsole = false;
 
     /**
      * 
      * Enables or disables logging to file.
      * If enabled, `OutFilePath` must be set to a valid path.
      * 
+     * By default, this is set to `true`.
+     * 
      **/
-    bool EnableFile;
+    bool EnableFile = true;
+
+    /**
+     * 
+     * If enabled, the files created wil be rotating.
+     * The number of rotating files should be set
+     * using memeber variable `NrOfRotatingFiles`.
+     * 
+     * By default, this flag will be set to `true`.
+     * 
+     **/
+    bool EnableRotatingFile = true;
+
+    /**
+     * 
+     * Defines the number of rotating files.
+     * Please, see `spdlog`'s rotating file for more
+     * details about the functionality of it.
+     * 
+     **/
+    unsigned int NrOfRotatingFiles = 7;
+
+    /**
+     * 
+     * Defines the maximum size of a log file
+     * after which a new file is created.
+     * 
+     * This is expressed in bytes.
+     * 
+     * By default, this is set to 50MB
+     * 
+     **/
+    unsigned int MaxFileSize = 52428800U;
 
     /**
      * 

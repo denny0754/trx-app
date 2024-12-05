@@ -10,6 +10,8 @@ add_executable (
 	"core/ui/Layer.cpp"
 	"core/ui/LayerStack.cpp"
 
+	"core/runtime/RTResourceManager.cpp"
+
 	"utils/logging/LogManager.cpp"
 
 	"utils/config/ConfigEntry.cpp"
@@ -19,6 +21,8 @@ add_executable (
 
 	"app/ui/MenuOverlay.cpp"
 	"app/ui/SessionSelectorLayer.cpp"
+
+	"app/runtime/RTAppConfig.cpp"
 )
 
 set_target_properties(TRXAPP PROPERTIES
@@ -34,6 +38,7 @@ find_package(spdlog CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(boost_regex CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 target_link_libraries(
 	TRXAPP
@@ -44,4 +49,5 @@ target_link_libraries(
 	opengl32
 	imgui::imgui
 	Boost::regex
+	nlohmann_json::nlohmann_json
 )

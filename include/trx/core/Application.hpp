@@ -80,6 +80,29 @@ public:
 	 **/
 	void OnApplicationStopEvent(Event* event);
 
+protected:
+	/**
+	 * 
+	 * Initializes the global logger,
+	 * which would be used by all components
+	 * of the application.
+	 * 
+	 **/
+	void InitializeLogging();
+
+	/**
+	 * 
+	 * Initializes the global configuration
+	 * by either reading from the file located
+	 * at `./cfg/application.cfg` or, if not found,
+	 * creates a default configuration.
+	 * 
+	 * The default configuration will be saved at the end of the
+	 * initialization of this method, only if the file does not exists.
+	 * 
+	 **/
+	void InitializeConfiguration();
+
 private:
 	/**
 	* 

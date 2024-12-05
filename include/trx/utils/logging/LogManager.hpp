@@ -21,6 +21,11 @@
 /* Project Headers */
 #include <trx/utils/logging/LogSettings.hpp>
 
+/* External Headers */
+#include <spdlog/spdlog.h>
+#include <spdlog/common.h>
+#include <nlohmann/json.hpp>
+
 /* Standard Headers */
 #include <unordered_map>
 
@@ -124,3 +129,38 @@ private:
 #define TRX_INF(logger_name, message, ...) trx::LogManager::Get().GetLogger(logger_name).info(message, __VA_ARGS__)
 #define TRX_DBG(logger_name, message, ...) trx::LogManager::Get().GetLogger(logger_name).debug(message, __VA_ARGS__)
 #define TRX_TRC(logger_name, message, ...) trx::LogManager::Get().GetLogger(logger_name).trace(message, __VA_ARGS__)
+
+/* Specialized Json Serializer for Enum: spdlog::level::level_enum */
+namespace spdlog::level
+{
+NLOHMANN_JSON_SERIALIZE_ENUM(spdlog::level::level_enum, {
+    {spdlog::level::level_enum::off, nullptr},
+    {spdlog::level::level_enum::off, ""},
+    {spdlog::level::level_enum::off, "6"},
+    {spdlog::level::level_enum::off, nullptr},
+
+    {spdlog::level::level_enum::trace, "trace"},
+    {spdlog::level::level_enum::trace, "t"},
+    {spdlog::level::level_enum::trace, "0"},
+
+    {spdlog::level::level_enum::debug, "debug"},
+    {spdlog::level::level_enum::debug, "d"},
+    {spdlog::level::level_enum::debug, "1"},
+
+    {spdlog::level::level_enum::info, "info"},
+    {spdlog::level::level_enum::info, "i"},
+    {spdlog::level::level_enum::info, "2"},
+
+    {spdlog::level::level_enum::warn, "warn"},
+    {spdlog::level::level_enum::warn, "w"},
+    {spdlog::level::level_enum::warn, "3"},
+
+    {spdlog::level::level_enum::err, "error"},
+    {spdlog::level::level_enum::err, "e"},
+    {spdlog::level::level_enum::err, "4"},
+
+    {spdlog::level::level_enum::critical, "critical"},
+    {spdlog::level::level_enum::critical, "c"},
+    {spdlog::level::level_enum::critical, "5"}
+});
+} // ns spdlog::level

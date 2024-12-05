@@ -90,7 +90,7 @@ void SessionSelectorLayer::OnUpdate(double delta)
 
 void SessionSelectorLayer::OnShutdown()
 {
-    LogManager::Get().GetDefaultLogger().info("Shutting down Session Selector Layer...");
+    TRX_TRC("APP", "Shutting down layer `Session Selector`...");
 }
 
 void SessionSelectorLayer::OnWindowResize(Event* event)

@@ -1,0 +1,13 @@
+{
+    "appearance": {
+        "font": "",
+        "width": 1280,
+        "height": 720,
+        "vsync": true
+    },
+    "log": {
+        "level": "info",
+        "file_size": 50,
+        "max_retention": 10
+    }
+}

@@ -1,8 +1,17 @@
 /* Project Headers */
+#include <trx/utils/logging/LogManager.hpp>
 #include <trx/core/Application.hpp>
 #include <trx/core/framework/FrontendFw.hpp>
 #include <trx/core/Middleware.hpp>
-#include <trx/utils/logging/LogManager.hpp>
+#include <trx/core/runtime/RTResourceManager.hpp>
+#include <trx/app/runtime/RTAppConfig.hpp>
+
+/* External Headers */
+#include <nlohmann/json.hpp>
+
+/* Standard Headers */
+#include <iostream>
+#include <fstream>
 
 namespace trx
 {
@@ -20,18 +29,19 @@ Application& Application::Get()
 
 void Application::Initialize()
 {
-	LogManager::Get().Initialize();
-	Middleware::Get().Initialize();
-	{
-		LogSettings app_log_settings = LogSettings();
-		app_log_settings.EnableConsole = true;
-		app_log_settings.EnableFile = false;
-		app_log_settings.MinLevel = spdlog::level::level_enum::info;
-		app_log_settings.Name = "Application";
-		TRX_REG_LOGGER(app_log_settings);
-	}
+	RTResourceManager::Get();
 
-	TRX_GET_LOGGER("Application").info("Initializing the Application...");
+	LogManager::Get().Initialize();
+
+	RTResourceManager::Get().PushResource("GLB_APP_CONFIG", std::make_shared<RTAppConfig>());
+
+	InitializeLogging();
+
+	RTResourceManager::Get().Initialize();
+	
+	Middleware::Get().Initialize();
+
+	TRX_INF("APP", "Bootstraping the application.");
 
 	Middleware::Get().RegisterListener(
 		EventKey::APPLICATION_SHOULD_CLOSE,
@@ -40,13 +50,15 @@ void Application::Initialize()
 
 	m_frameworks.push_back(new FrontendFw());
 
-	TRX_INF("Application", "Number of frameworks initialized: {}", m_frameworks.size());
+	TRX_TRC("APP", "Finished pushing frameworks to the Framework Stack. Number of frameworks registered: {0}", m_frameworks.size());
 
 	// Initializing all Frameworks
 	for(auto& fw : m_frameworks)
 	{
 		fw->Initialize();
 	}
+
+	TRX_INF("APP", "Application has finished boostraping. Everything has been initialized.");
 
 	m_running = true;
 }
@@ -60,7 +72,7 @@ void Application::Run()
 			fw->Update();
 		}
 	}
-	TRX_GET_LOGGER("Application").info("Exiting application...");
+	TRX_INF("APP", "Exiting the application. Good bye!!");
 }
 
 void Application::Stop()
@@ -70,14 +82,40 @@ void Application::Stop()
 
 void Application::Shutdown()
 {
-	TRX_INF("Application", "Shutting down all frameworks.");
+	TRX_DBG("APP", "Shutting down all frameworks registered.");
+
 	for(auto& fw : m_frameworks)
 	{
 		fw->Shutdown();
 		delete fw;
 	}
 
+	RTResourceManager::Get().Shutdown();
+
 	delete g_instance;
+}
+
+void Application::InitializeLogging()
+{
+
+	nlohmann::json& config = RTResourceManager::Get().GetResource("GLB_APP_CONFIG")->ToType<RTAppConfig>()->GetConfig();
+
+	auto log_level = config["log"]["level"].get<spdlog::level::level_enum>();
+	auto log_file_size = config["log"]["file_size"].get<unsigned int>();
+	auto max_retention = config["log"]["max_retention"].get<unsigned int>();
+
+	LogSettings app_log_settings = LogSettings();
+
+	app_log_settings.EnableConsole = false;
+	app_log_settings.EnableFile = true;
+	app_log_settings.EnableRotatingFile = true;
+	// app_log_settings.MaxFileSize = log_file_size * 1024 * 1024;
+	app_log_settings.MinLevel = spdlog::level::level_enum::trace;
+	app_log_settings.Name = "APP";
+	// app_log_settings.NrOfRotatingFiles = max_retention;
+	app_log_settings.OutFilePath = "./log/app.txt";
+
+	LogManager::Get().RegisterLogger(app_log_settings);
 }
 
 void Application::OnApplicationStopEvent(Event* event)

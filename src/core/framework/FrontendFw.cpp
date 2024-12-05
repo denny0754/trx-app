@@ -2,49 +2,47 @@
 #include <trx/core/framework/FrontendFw.hpp>
 #include <trx/core/Middleware.hpp>
 #include <trx/utils/logging/LogManager.hpp>
-#include <trx/utils/config/ConfigIO.hpp>
+#include <trx/core/runtime/RTResourceManager.hpp>
 #include <trx/app/ui/MenuOverlay.hpp>
 #include <trx/app/ui/SessionSelectorLayer.hpp>
 
 #include <trx/app/event/WindowResizeEvent.hpp>
 #include <trx/app/event/WindowResizeEventData.hpp>
 
+#include <trx/app/runtime/RTAppConfig.hpp>
+
 /* External Headers */
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-
-/* Macro Definition */
-#define FRONTEND_LOGGER_NAME "FrontendFw"
 
 namespace trx
 {
 
 void FrontendFw::Initialize()
 {
-    InitializeConfig();
+    TRX_DBG("APP", "Initializing the Frontend Framework...");
 
-    spdlog::level::level_enum log_level = static_cast<spdlog::level::level_enum>(((int)m_config["LOGGING"]["LOG_LEVEL"]));
-    TRX_CREATE_LOGGER("FrontendFw", true, false, "", log_level)
-
-    TRX_INF(FRONTEND_LOGGER_NAME, "Initializing Frontend Framework...");
-
-    m_config = ConfigIO::ParseFile("./cfg/frontend.cfg");
+    nlohmann::json& glb_app_config = RTResourceManager::Get().GetResource("GLB_APP_CONFIG")->ToType<RTAppConfig>()->GetConfig();
+    // nlohmann::json& usr_app_config = RTResourceManager::Get().GetResource("USR_APP_CONFIG")->ToType<RTUserAppConfig>();
+    int glfw_window_width = glb_app_config["appearance"]["width"].get<int>();
+    int glfw_window_height = glb_app_config["appearance"]["height"].get<int>();
+    bool glfw_use_vsync = glb_app_config["appearance"]["vsync"].get<bool>();
 
     if(!glfwInit())
     {
         int glfw_error_code = glfwGetError(NULL);
-        TRX_DBG(FRONTEND_LOGGER_NAME, "GLFW Window couldn't be initialized. GLFW Error Code: {0}", glfw_error_code);
-        TRX_CRT(FRONTEND_LOGGER_NAME, "A problem occured while initializing the Application Window. Please, report it to the developer and provide a more verbose log.");
+        TRX_DBG("APP", "GLFW Window couldn't be initialized. GLFW Error Code: {0}", glfw_error_code);
+        TRX_CRT("APP", "A problem occured while initializing the Application Window. Please, report it to the developer and provide a more verbose log.");
         return;
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-    TRX_DBG(FRONTEND_LOGGER_NAME, "Creating a GLFW Window....");
+    TRX_TRC("APP", "Initializing GLFW Window.");
     m_nativeWindow = glfwCreateWindow(
-        static_cast<int>(m_config["WINDOW"]["WINDOW_WIDTH"]),
-        static_cast<int>(m_config["WINDOW"]["WINDOW_HEIGHT"]),
+        glfw_window_width,
+        glfw_window_height,
         "Transaction-X",
         nullptr,
         nullptr
@@ -59,16 +57,7 @@ void FrontendFw::Initialize()
     glfwMakeContextCurrent(m_nativeWindow);
 
     /* Setting the VSYNC flag */
-    glfwSwapInterval((bool)m_config["WINDOW"]["ENABLE_VSYNC"]);
-
-    TRX_DBG(FRONTEND_LOGGER_NAME, "GLFW Window created succesfully... See below the configuration used:");
-    TRX_DBG(
-        FRONTEND_LOGGER_NAME,
-        "Resolution: {0}x{1}\nVSYNC Enabled: {2}",
-        static_cast<int>(m_config["WINDOW"]["WINDOW_WIDTH"]),
-        static_cast<int>(m_config["WINDOW"]["WINDOW_HEIGHT"]),
-        static_cast<int>(m_config["WINDOW"]["ENABLE_VSYNC"])
-    );
+    glfwSwapInterval(glfw_use_vsync);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -110,33 +99,6 @@ void FrontendFw::Initialize()
     /* End of push of all Layers */
 
     m_isReady = true;
-}
-
-void FrontendFw::InitializeConfig()
-{
-    m_config = ConfigIO::ParseFile("./cfg/frontend.cfg");
-
-    if(m_config.find("WINDOW") == m_config.end())
-    {
-        ConfigSection window_section = ConfigSection("WINDOW", { });
-
-        window_section.emplace(ConfigEntry("WINDOW_WIDTH", "1280"));
-        window_section.emplace(ConfigEntry("WINDOW_HEIGHT", "720"));
-        window_section.emplace(ConfigEntry("ENABLE_VSYNC", "true"));
-
-        m_config.get("WIONDOW", window_section);
-    }
-
-    if(m_config.find("LOGGING") == m_config.end())
-    {
-        ConfigSection logging_section = ConfigSection("LOGGING", { });
-
-        logging_section.emplace(ConfigEntry("ENABLE_LOGGING", "true"));
-        logging_section.emplace(ConfigEntry("LOG_LEVEL", "TRACE"));
-        logging_section.emplace(ConfigEntry("LOG_FILE", "./logs/frontend.log"));
-
-        m_config.get("LOGGING", logging_section);
-    }
 }
 
 void FrontendFw::Update()

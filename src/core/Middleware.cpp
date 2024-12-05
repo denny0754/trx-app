@@ -19,19 +19,17 @@ Middleware& Middleware::Get()
 
 void Middleware::Initialize()
 {
-    TRX_CREATE_LOGGER("Middleware", true, false, "", spdlog::level::level_enum::debug)
 
-    TRX_GET_LOGGER("Middleware").info("Initializing Middleware...");
 }
 
 Middleware::ListenerHandle Middleware::RegisterListener(EventKey event_key, Middleware::EventListener listener)
 {
-    TRX_GET_LOGGER("Middleware").debug("Registering event listener with key {0:x}", (uint32_t)event_key);
-
     m_currentHandle++;
 
     m_listenerKeys[event_key].push_back(m_currentHandle);
     m_listenersHandle[m_currentHandle] = listener;
+
+    TRX_TRC("APP", "[Middleware] Registered event listener. Event code: {0:x}", (uint32_t)event_key);
 
     return m_currentHandle;
 }
@@ -46,6 +44,7 @@ void Middleware::UnregisterListener(EventKey event_key, ListenerHandle handle)
             if(m_listenersHandle.find(handle) != m_listenersHandle.end() && listener_handle == handle)
             {
                 m_listenersHandle.erase(handle);
+                TRX_TRC("APP", "[Middleware] Unregistered event listener. Event code: {0:x}. Handle: {0:x}", (uint32_t)event_key, handle);
                 return;
             }
         }

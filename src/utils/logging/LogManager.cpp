@@ -4,6 +4,7 @@
 /* External Headers */
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/rotating_file_sink.h>
 
 namespace trx
 {
@@ -47,9 +48,18 @@ void LogManager::RegisterLogger(const LogSettings& log_settings)
 		std::vector<spdlog::sink_ptr> sinks;
 
 		if (log_settings.EnableFile) {
-			sinks.push_back(
-				std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_settings.OutFilePath.string())
-			);
+            if(log_settings.EnableRotatingFile)
+            {
+                sinks.push_back(
+                    std::make_shared<spdlog::sinks::rotating_file_sink_mt>(log_settings.OutFilePath.string(), log_settings.MaxFileSize, log_settings.NrOfRotatingFiles, false)
+                );
+            }
+            else
+            {
+                sinks.push_back(
+                    std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_settings.OutFilePath.string())
+                );
+            }
 		}
 
 		if (log_settings.EnableConsole) {

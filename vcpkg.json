@@ -16,6 +16,10 @@
     {
       "name": "boost-regex",
       "version>=": "1.86.0"
+    },
+    {
+      "name": "nlohmann-json",
+      "version>=": "3.11.3"
     }
   ]
 }

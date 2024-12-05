@@ -10,7 +10,7 @@ LayerStack::LayerStack()
 {
     m_layerOverlayIndex = 0;
 
-    LogManager::Get().GetDefaultLogger().info("Initializing the Layer Stack...");
+    TRX_TRC("APP", "Layer Stack is being initialized...");
 
     Middleware::Get().RegisterListener(
         EventKey::PUSH_LAYER_EVENT,

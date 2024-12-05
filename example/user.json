@@ -1,0 +1,12 @@
+{
+    "appearance": {
+        "font": "",
+        "width": 400,
+        "height": 200
+    },
+    "log": {
+        "level": "info",
+        "file_size": 50,
+        "max_retention": 10
+    }
+}
