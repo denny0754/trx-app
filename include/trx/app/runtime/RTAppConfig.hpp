@@ -24,6 +24,9 @@
 /* External Headers */
 #include <nlohmann/json.hpp>
 
+/* Standard Headers */
+#include <filesystem>
+
 namespace trx
 {
 
@@ -32,12 +35,25 @@ class RTAppConfig : public RTResource
 public:
     void Initialize() override;
 
+	void Load(const std::filesystem::path& file_path);
+
+	void Load(const std::string& json_data);
+
+	void LoadOrDefault(const std::filesystem::path& file_path, const std::string& json_data);
+
+	void Reload();
+
+	void Save();
+
     void Destroy() override;
 
     nlohmann::json& GetConfig();
 
 private:
     nlohmann::json m_appConfig;
+
+	std::filesystem::path m_configPath;
+	std::filesystem::path m_configFile;
 };
 
 } // ns trx

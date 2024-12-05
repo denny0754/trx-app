@@ -29,17 +29,21 @@ Application& Application::Get()
 
 void Application::Initialize()
 {
-	RTResourceManager::Get();
-
 	LogManager::Get().Initialize();
-
-	RTResourceManager::Get().PushResource("GLB_APP_CONFIG", std::make_shared<RTAppConfig>());
-
-	InitializeLogging();
 
 	RTResourceManager::Get().Initialize();
 	
 	Middleware::Get().Initialize();
+
+	RTResourceManager::Get().PushResource("GLB_APP_CONFIG", std::make_shared<RTAppConfig>());
+	RTResourceManager::Get().PushResource("USR_APP_CONFIG", std::make_shared<RTAppConfig>());
+
+	/* Loading the Global and User settings */
+	std::string default_settings_jdata = R"({"appearance":{"font":"","height":720,"vsync":true,"width":1280},"log":{"file_size":50,"level":"info","max_retention":10}})";
+	RTResourceManager::Get().GetResource("GLB_APP_CONFIG")->ToType<RTAppConfig>()->LoadOrDefault("./cfg/app.json", default_settings_jdata);
+	RTResourceManager::Get().GetResource("USR_APP_CONFIG")->ToType<RTAppConfig>()->LoadOrDefault("./cfg/usr_app.json", default_settings_jdata);
+
+	InitializeLogging();
 
 	TRX_INF("APP", "Bootstraping the application.");
 
@@ -48,8 +52,9 @@ void Application::Initialize()
 		std::bind(&Application::OnApplicationStopEvent, g_instance, std::placeholders::_1)
 	);
 
+	
+	TRX_TRC("APP", "Pushing all registered frameworks to the Stack.");
 	m_frameworks.push_back(new FrontendFw());
-
 	TRX_TRC("APP", "Finished pushing frameworks to the Framework Stack. Number of frameworks registered: {0}", m_frameworks.size());
 
 	// Initializing all Frameworks
@@ -106,13 +111,15 @@ void Application::InitializeLogging()
 
 	LogSettings app_log_settings = LogSettings();
 
-	app_log_settings.EnableConsole = false;
+#if defined(TRX_DEVELOPER_BUILD)
+	app_log_settings.EnableConsole = true;
+#endif
 	app_log_settings.EnableFile = true;
 	app_log_settings.EnableRotatingFile = true;
-	// app_log_settings.MaxFileSize = log_file_size * 1024 * 1024;
-	app_log_settings.MinLevel = spdlog::level::level_enum::trace;
+	app_log_settings.MaxFileSize = log_file_size * 1024 * 1024;
+	app_log_settings.MinLevel = log_level;
 	app_log_settings.Name = "APP";
-	// app_log_settings.NrOfRotatingFiles = max_retention;
+	app_log_settings.NrOfRotatingFiles = max_retention;
 	app_log_settings.OutFilePath = "./log/app.txt";
 
 	LogManager::Get().RegisterLogger(app_log_settings);

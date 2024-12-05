@@ -18,7 +18,7 @@ RTResourceManager& RTResourceManager::Get()
 
 void RTResourceManager::Initialize()
 {
-    TRX_DBG("APP", "Runtime Resource Manager has been initialized...");
+
 }
 
 void RTResourceManager::Shutdown()

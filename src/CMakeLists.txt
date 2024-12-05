@@ -33,6 +33,10 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET TRXAPP PROPERTY CXX_STANDARD 20)
 endif()
 
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+   	add_compile_definitions(TRX_DEVELOPER_BUILD)
+endif()
+
 find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
