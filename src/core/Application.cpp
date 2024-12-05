@@ -4,6 +4,7 @@
 #include <trx/core/framework/FrontendFw.hpp>
 #include <trx/core/Middleware.hpp>
 #include <trx/core/runtime/RTResourceManager.hpp>
+#include <trx/core/thread/ThreadPool.hpp>
 #include <trx/app/runtime/RTAppConfig.hpp>
 
 /* External Headers */
@@ -51,10 +52,9 @@ void Application::Initialize()
 		EventKey::APPLICATION_SHOULD_CLOSE,
 		std::bind(&Application::OnApplicationStopEvent, g_instance, std::placeholders::_1)
 	);
-
 	
 	TRX_TRC("APP", "Pushing all registered frameworks to the Stack.");
-	m_frameworks.push_back(new FrontendFw());
+	m_frameworks.push_back(std::make_shared<FrontendFw>());
 	TRX_TRC("APP", "Finished pushing frameworks to the Framework Stack. Number of frameworks registered: {0}", m_frameworks.size());
 
 	// Initializing all Frameworks
@@ -70,19 +70,50 @@ void Application::Initialize()
 
 void Application::Run()
 {
-	while (m_running)
+	TRX_DBG("APP", "Initializing Thread Pool for detached frameworks...");
+	trx::ThreadPool framework_pool = trx::ThreadPool();
+
+	for(auto& fw : m_frameworks)
+	{
+		if(fw->IsDetached())
+		{
+			framework_pool.Submit([this, fw](){
+				while(m_running.load(std::memory_order_acquire))
+				{
+					try
+					{
+						fw->Update();
+					}
+					catch(std::exception& exception)
+					{
+						TRX_ERR("APP", "Error while updating framework task: {0}", exception.what());
+					}
+					catch(...)
+					{
+						TRX_ERR("APP", "An unknown error occured while updating framework in the Thread Pool.");
+					}
+				}
+			});
+		}
+	}
+
+	while (m_running.load(std::memory_order_acquire))
 	{
 		for(auto& fw : m_frameworks)
 		{
-			fw->Update();
+			if(!fw->IsDetached())
+			{
+				fw->Update();
+			}
 		}
 	}
+
 	TRX_INF("APP", "Exiting the application. Good bye!!");
 }
 
 void Application::Stop()
 {
-	m_running = false;
+	m_running.store(false, std::memory_order_release);
 }
 
 void Application::Shutdown()
@@ -92,7 +123,6 @@ void Application::Shutdown()
 	for(auto& fw : m_frameworks)
 	{
 		fw->Shutdown();
-		delete fw;
 	}
 
 	RTResourceManager::Get().Shutdown();

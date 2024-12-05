@@ -25,6 +25,7 @@
 /* Standard Headers */
 #include <vector>
 #include <memory>
+#include <mutex>
 
 namespace trx
 {
@@ -121,14 +122,14 @@ private:
 	* Member variable to store the state of execution of the Application.
 	* 
 	**/
-	bool m_running;
+	std::atomic<bool> m_running;
 
 	/** 
 	 * 
 	 * A vector of Frameworks.
 	 * 
 	 **/
-	std::vector<Framework*> m_frameworks;
+	std::vector<std::shared_ptr<Framework>> m_frameworks;
 };
 
 } // ns trx

@@ -31,7 +31,7 @@ public:
 	 * 
 	 **/
 	Framework()
-		: m_isReady(false)
+		: m_isReady(false), m_isDetached(false)
 	{
 
 	}
@@ -83,6 +83,21 @@ public:
 		return m_isReady;
 	}
 
+	/**
+	 * 
+	 * Returns true if the Framework should be
+	 * executing in detached mode(dedicated thread) or
+	 * not(Main thread).
+	 * 
+	 * @return True if the Framework runs on detached mode(dedicated Thread)
+	 * 		   or not(Main thread).
+	 * 
+	 **/
+	inline bool IsDetached() const
+	{
+		return m_isDetached;
+	}
+
 protected:
 	/**
 	 * 
@@ -97,6 +112,20 @@ protected:
 	 * 
 	 **/
 	bool m_isReady;
+
+	/**
+	 * 
+	 * Member variable used to flag the framework
+	 * as running in detached mode.
+	 * 
+	 * This flag tells the application the two way of exeuction:
+	 * 
+	 * 	* False: The framework is updated on the Main thread.
+	 * 
+	 * 	* True: The framework run on a separate thread.
+	 * 
+	 **/
+	bool m_isDetached;
 };
 
 } // ns trx
