@@ -21,9 +21,6 @@ SessionSelectorLayer::SessionSelectorLayer()
 
 void SessionSelectorLayer::OnInitialize()
 {
-    auto win_size = ImGui::GetIO().DisplaySize;
-    m_selectorWinSize.x = (float)win_size.x / 2;
-    m_selectorWinSize.y = (float)win_size.y / 2;
     Middleware::Get().RegisterListener(
         EventKey::WINDOW_RESIZE_EVENT,
         std::bind(&SessionSelectorLayer::OnWindowResize, this, std::placeholders::_1)
@@ -32,6 +29,12 @@ void SessionSelectorLayer::OnInitialize()
 
 void SessionSelectorLayer::OnRender()
 {
+    ImGuiIO& imgui_io = ImGui::GetIO();
+    
+    auto win_size = imgui_io.DisplaySize;
+    m_selectorWinSize.x = (float)win_size.x / 2;
+    m_selectorWinSize.y = (float)win_size.y / 2;
+
     static bool show_demo_window = false;
     static const char* sessions[] = {"Remote", "Local"};
     static int* selected = new int;

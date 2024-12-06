@@ -50,7 +50,7 @@ void FrontendFw::Initialize()
 
     if(!m_nativeWindow)
     {
-        TRX_ERR("FrontendFw", "Error while initializing GLFW window...");
+        TRX_ERR("APP", "Error while initializing GLFW window...");
         return;
     }
 
