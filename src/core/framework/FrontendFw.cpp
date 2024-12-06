@@ -11,6 +11,8 @@
 
 #include <trx/app/runtime/RTAppConfig.hpp>
 
+#include <trx/utils/tools/Timer.hpp>
+
 /* External Headers */
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -103,6 +105,8 @@ void FrontendFw::Initialize()
 
 void FrontendFw::Update()
 {
+    Timer fw_timer = Timer();
+
     ImGuiIO& io = ImGui::GetIO();
     
     if(glfwWindowShouldClose(m_nativeWindow))
@@ -145,6 +149,8 @@ void FrontendFw::Update()
     }
 
     glfwSwapBuffers(m_nativeWindow);
+
+    TRX_TRC("APP", "FrontendFw~Update took: {0}ms", fw_timer.ElapsedMillis());
 }
 
 void FrontendFw::Shutdown()
