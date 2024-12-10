@@ -3,7 +3,9 @@
 #include <trx/core/Middleware.hpp>
 #include <trx/utils/logging/LogManager.hpp>
 #include <trx/app/event/LayerEvent.hpp>
+
 #include <trx/app/ui/SessionSelectorLayer.hpp>
+#include <trx/app/ui/AppSettingsLayer.hpp>
 
 /* External Headers */
 #include <imgui.h>
@@ -38,15 +40,11 @@ void MenuOverlay::OnRender()
 
         if(ImGui::BeginMenu("Tools"))
         {
+            m_menuRefData.M_I_SettingsClicked = ImGui::MenuItem("Settings");
             ImGui::EndMenu();
         }
 
         if(ImGui::BeginMenu("View"))
-        {
-            ImGui::EndMenu();
-        }
-
-        if(ImGui::BeginMenu("Settings"))
         {
             ImGui::EndMenu();
         }
@@ -75,9 +73,17 @@ void MenuOverlay::OnUpdate(double delta)
     if(m_menuRefData.M_I_NewSessionClicked)
     {
         Middleware::Get().PushEvent(
-            new LayerEvent(new LayerEventData(new SessionSelectorLayer()), EventKey::PUSH_LAYER_EVENT)
+            new LayerEvent(new LayerEventData(new SessionSelectorLayer()), EventKey::PUSH_LAYER_DEFERRED)
         );
         m_menuRefData.M_I_NewSessionClicked = false;
+    }
+    if(m_menuRefData.M_I_SettingsClicked)
+    {
+        TRX_TRC("APP", "Fulfilling the request to open the settings menu...");
+        Middleware::Get().PushEvent(
+            new LayerEvent(new LayerEventData(new AppSettingsLayer()), EventKey::PUSH_LAYER_DEFERRED)
+        );
+        m_menuRefData.M_I_SettingsClicked = false;
     }
 }
 

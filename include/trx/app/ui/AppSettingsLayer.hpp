@@ -21,13 +21,16 @@
 /* Project Headers */
 #include <trx/core/ui/Layer.hpp>
 
+/* External Headers */
+#include <spdlog/common.h>
+
 namespace trx
 {
 
-class MenuOverlay : public Layer
+class AppSettingsLayer : public Layer
 {
 public:
-    MenuOverlay();
+    AppSettingsLayer();
 
     void OnInitialize() override;
 
@@ -38,15 +41,31 @@ public:
     void OnShutdown() override;
 
 private:
-    struct MenuData
-    {
-		bool M_I_NewSessionClicked = false;
-		bool M_I_CloseCurrentSessionClicked = false;
-        bool M_I_ExitClicked = false;
-		bool M_I_SettingsClicked = false;
-    };
+	bool m_isWindowOpen;
 
-    MenuData m_menuRefData;
+	const char* m_logLevels[6] = { "Trace", "Debug", "Info", "Warning", "Error", "Critical" };
+
+	const std::unordered_map<const char*, spdlog::level::level_enum> m_logLevelsChrMap = {
+		{"Trace", spdlog::level::level_enum::trace},
+		{"Debug", spdlog::level::level_enum::debug},
+		{"Info", spdlog::level::level_enum::info},
+		{"Warning", spdlog::level::level_enum::warn},
+		{"Error", spdlog::level::level_enum::err},
+		{"Critical", spdlog::level::level_enum::critical},
+		{"Off", spdlog::level::level_enum::off}
+	};
+
+	struct SettingsData
+	{
+		/* Logging Settings */
+		int* CurrentLogLevel;
+		int* PreviousLogLevel;
+
+		/* UI Components Control */
+		bool ApplySettingsButton;
+	};
+
+	SettingsData m_settingsDataRef;
 };
 
 } // ns trx

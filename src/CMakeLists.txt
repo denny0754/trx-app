@@ -21,6 +21,7 @@ add_executable (
 
 	"app/ui/MenuOverlay.cpp"
 	"app/ui/SessionSelectorLayer.cpp"
+	"app/ui/AppSettingsLayer.cpp"
 
 	"app/runtime/RTAppConfig.cpp"
 )

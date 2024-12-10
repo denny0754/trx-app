@@ -18,7 +18,17 @@ LayerStack::LayerStack()
     );
 
     Middleware::Get().RegisterListener(
+        EventKey::PUSH_LAYER_DEFERRED,
+        std::bind(&LayerStack::OnLayerEvent, this, std::placeholders::_1)
+    );
+
+    Middleware::Get().RegisterListener(
         EventKey::POP_LAYER_EVENT,
+        std::bind(&LayerStack::OnLayerEvent, this, std::placeholders::_1)
+    );
+
+    Middleware::Get().RegisterListener(
+        EventKey::POP_LAYER_DEFERRED,
         std::bind(&LayerStack::OnLayerEvent, this, std::placeholders::_1)
     );
 }
@@ -73,6 +83,16 @@ void LayerStack::PushLayer(std::shared_ptr<Layer> layer)
     TRX_TRC("APP", "Layer `{0}` has been initialized and succesfully pushed to the Layer Stack. Size of Layer Stack: {1}", layer_name, m_layers.size());
 }
 
+void LayerStack::PushLayerDeferred(std::shared_ptr<Layer> layer)
+{
+    m_deferredLayersPush.push(layer);
+}
+
+void LayerStack::PushOverlayDeferred(std::shared_ptr<Layer> overlay)
+{
+    m_deferredOverlaysPush.push(overlay);
+}
+
 void LayerStack::PopOverlay(const std::string& overlay_name)
 {
     auto overlay_it = FindLayer(overlay_name);
@@ -104,8 +124,20 @@ void LayerStack::PopLayer(const std::string& layer_name)
     }
 }
 
+void LayerStack::PopLayerDeferred(const std::string& layer_name)
+{
+    m_deferredLayersPop.push(layer_name);
+}
+
+void LayerStack::PopOverlayDeferred(const std::string& overlay_name)
+{
+    m_deferredLayersPop.push(overlay_name);
+}
+
 void LayerStack::Update(double frame_time)
 {
+    EmptyDeferredQueue();
+
     for(auto& layer : m_layers)
     {
         layer->OnUpdate(frame_time);
@@ -144,6 +176,16 @@ void LayerStack::OnLayerEvent(Event* event)
         TRX_TRC("APP", "Fulfilling the request to pop layer `{0}` from the Layer Stack...", layer_event_data->GetLayerName());
         PopLayer(layer_event_data->GetLayerName());
     }
+    else if (layer_event->GetEventKey() == EventKey::PUSH_LAYER_DEFERRED)
+    {
+        TRX_TRC("APP", "Fulfilling the request to push layer `{0}` to the Layer Stack in deferred mode...", layer_event_data->GetLayer()->GetLayerName());
+        PushLayerDeferred(std::shared_ptr<Layer>(layer_event_data->GetLayer()));
+    }
+    else if (layer_event->GetEventKey() == EventKey::POP_LAYER_DEFERRED)
+    {
+        TRX_TRC("APP", "Fulfilling the request to pop layer `{0}` from the Layer stack in deferred mode...", layer_event_data->GetLayerName());
+        PopLayerDeferred(layer_event_data->GetLayerName());
+    }
 }
 
 std::vector<std::shared_ptr<Layer>>::iterator LayerStack::FindLayer(const std::string& layer_name)
@@ -156,6 +198,37 @@ std::vector<std::shared_ptr<Layer>>::iterator LayerStack::FindLayer(const std::s
         }
     );
     return layer_it;
+}
+
+void LayerStack::EmptyDeferredQueue()
+{
+    if(!m_deferredOverlaysPop.empty()) TRX_TRC("APP", "Popping {0} of deferred overlays...", m_deferredOverlaysPop.size());
+    while (!m_deferredOverlaysPop.empty())
+    {
+        PopOverlay(m_deferredOverlaysPop.front());
+        m_deferredOverlaysPop.pop();
+    }
+
+    if(!m_deferredLayersPop.empty()) TRX_TRC("APP", "Popping {0} of deferred layers...", m_deferredLayersPop.size());
+    while (!m_deferredLayersPop.empty())
+    {
+        PopLayer(m_deferredLayersPop.front());
+        m_deferredLayersPop.pop();
+    }
+
+    if(!m_deferredOverlaysPush.empty()) TRX_TRC("APP", "Pushing {0} of deferred overlays...", m_deferredOverlaysPush.size());
+    while (!m_deferredOverlaysPush.empty())
+    {
+        PushOverlay(m_deferredOverlaysPush.front());
+        m_deferredOverlaysPush.pop();
+    }
+
+    if(!m_deferredLayersPush.empty()) TRX_TRC("APP", "Pushing {0} of deferred layers...", m_deferredLayersPush.size());
+    while (!m_deferredLayersPush.empty())
+    {
+        PushLayer(m_deferredLayersPush.front());
+        m_deferredLayersPush.pop();
+    }
 }
 
 } // ns trx

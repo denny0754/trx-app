@@ -25,6 +25,7 @@
 /* Standard Headers */
 #include <unordered_map>
 #include <vector>
+#include <queue>
 
 namespace trx
 {
@@ -74,6 +75,17 @@ public:
     void PushLayer(std::shared_ptr<Layer> layer);
 
 	/**
+	 *
+	 * Pushes a Layer to the Layer Stack on the next frame.
+	 *
+	 * @param layer A shared pointer to the Layer.
+	 *
+	 **/
+	void PushLayerDeferred(std::shared_ptr<Layer> layer);
+
+	void PushOverlayDeferred(std::shared_ptr<Layer> overlay);
+
+	/**
 	 * 
 	 * Pops an overlay given its name.
 	 * If the overlay does not exists, nothing is done.
@@ -106,6 +118,10 @@ public:
 	 * 
 	 **/
     void PopLayer(const std::string& layer_name);
+
+	void PopLayerDeferred(const std::string& layer_name);
+
+	void PopOverlayDeferred(const std::string& overlay_name);
 
 	/**
 	 * 
@@ -157,6 +173,8 @@ protected:
 	 **/
 	std::vector<std::shared_ptr<Layer>>::iterator FindLayer(const std::string& layer_name);
 
+	void EmptyDeferredQueue();
+
 private:
 	/**
 	 * 
@@ -179,6 +197,14 @@ private:
 	 * 
 	 **/
 	size_t m_layerOverlayIndex;
+
+	std::queue<std::shared_ptr<Layer>> m_deferredLayersPush;
+
+	std::queue<std::shared_ptr<Layer>> m_deferredOverlaysPush;
+
+	std::queue<std::string> m_deferredLayersPop;
+
+	std::queue<std::string> m_deferredOverlaysPop;
 };
 
 } // ns trx
