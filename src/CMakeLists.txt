@@ -9,7 +9,7 @@ add_executable (
 
 	"core/ui/Layer.cpp"
 	"core/ui/LayerStack.cpp"
-
+	
 	"core/runtime/RTResourceManager.cpp"
 
 	"utils/logging/LogManager.cpp"
@@ -22,9 +22,12 @@ add_executable (
 	"app/ui/MenuOverlay.cpp"
 	"app/ui/SessionSelectorLayer.cpp"
 	"app/ui/AppSettingsLayer.cpp"
+	"app/ui/AboutLayer.cpp"
 
 	"app/runtime/RTAppConfig.cpp"
- "app/ui/AboutLayer.cpp")
+
+	"core/Core.cpp"
+)
 
 set_target_properties(TRXAPP PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
