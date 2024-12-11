@@ -24,7 +24,7 @@ add_executable (
 	"app/ui/AppSettingsLayer.cpp"
 
 	"app/runtime/RTAppConfig.cpp"
-)
+ "app/ui/AboutLayer.cpp")
 
 set_target_properties(TRXAPP PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"

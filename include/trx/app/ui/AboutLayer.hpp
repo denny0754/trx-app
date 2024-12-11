@@ -24,30 +24,21 @@
 namespace trx
 {
 
-class MenuOverlay : public Layer
+class AboutLayer : public Layer
 {
 public:
-    MenuOverlay();
+	AboutLayer();
 
-    void OnInitialize() override;
+	void OnInitialize() override;
 
-    void OnRender() override;
+	void OnRender() override;
 
-    void OnUpdate(double delta) override;
+	void OnUpdate(double delta) override;
 
-    void OnShutdown() override;
+	void OnShutdown() override;
 
 private:
-    struct MenuData
-    {
-		bool M_I_NewSessionClicked = false;
-		bool M_I_CloseCurrentSessionClicked = false;
-        bool M_I_ExitClicked = false;
-		bool M_I_SettingsClicked = false;
-		bool M_I_AboutClicked = false;
-    };
-
-    MenuData m_menuRefData;
+	bool m_isWindowOpen;
 };
 
 } // ns trx

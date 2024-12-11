@@ -6,6 +6,7 @@
 
 #include <trx/app/ui/SessionSelectorLayer.hpp>
 #include <trx/app/ui/AppSettingsLayer.hpp>
+#include <trx/app/ui/AboutLayer.hpp>
 
 /* External Headers */
 #include <imgui.h>
@@ -49,14 +50,9 @@ void MenuOverlay::OnRender()
             ImGui::EndMenu();
         }
 
-        // `About` Menu
-        if(ImGui::BeginMenu("About"))
-        {
-            ImGui::EndMenu();
-        }
-
         if(ImGui::BeginMenu("Help"))
         {
+            m_menuRefData.M_I_AboutClicked = ImGui::MenuItem("About...");
             ImGui::EndMenu();
         }
 
@@ -84,6 +80,13 @@ void MenuOverlay::OnUpdate(double delta)
             new LayerEvent(new LayerEventData(new AppSettingsLayer()), EventKey::PUSH_LAYER_DEFERRED)
         );
         m_menuRefData.M_I_SettingsClicked = false;
+    }
+    if (m_menuRefData.M_I_AboutClicked)
+    {
+        Middleware::Get().PushEvent(
+            new LayerEvent(new LayerEventData(new AboutLayer()), EventKey::PUSH_LAYER_DEFERRED)
+        );
+        m_menuRefData.M_I_AboutClicked = false;
     }
 }
 
