@@ -6,6 +6,7 @@
 #include <trx/core/runtime/RTResourceManager.hpp>
 #include <trx/core/thread/ThreadPool.hpp>
 #include <trx/app/runtime/RTAppConfig.hpp>
+#include <trx/app/event/FrameworkEvent.hpp>
 
 /* External Headers */
 #include <nlohmann/json.hpp>
@@ -51,6 +52,11 @@ void Application::Initialize()
 	Middleware::Get().RegisterListener(
 		EventKey::APPLICATION_SHOULD_CLOSE,
 		std::bind(&Application::OnApplicationStopEvent, g_instance, std::placeholders::_1)
+	);
+
+	Middleware::Get().RegisterListener(
+		EventKey::BOOTSTRAP_FRAMEWORK,
+		std::bind(&Application::OnFrameworkEvent, g_instance, std::placeholders::_1)
 	);
 	
 	TRX_TRC("APP", "Pushing all registered frameworks to the Stack.");
@@ -158,6 +164,17 @@ void Application::InitializeLogging()
 void Application::OnApplicationStopEvent(Event* event)
 {
 	Stop();
+}
+
+void Application::OnFrameworkEvent(Event* event)
+{
+	const FrameworkEvent* fw_event = event->ToType<FrameworkEvent>();
+	const FrameworkEventData* fw_event_data = event->GetEventData()->ToType<FrameworkEventData>();
+
+	if (fw_event->GetEventKey() == EventKey::BOOTSTRAP_FRAMEWORK)
+	{
+		m_frameworks.push_back(std::shared_ptr<Framework>(fw_event_data->GetFramework()));
+	}
 }
 
 } // ns trx

@@ -26,6 +26,9 @@ add_executable (
 
 	"app/runtime/RTAppConfig.cpp"
 
+	"app/framework/RemoteSessionFw.cpp"
+	"app/framework/LocalSessionFw.cpp"
+
 	"core/Core.cpp"
 )
 

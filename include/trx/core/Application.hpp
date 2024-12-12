@@ -104,6 +104,8 @@ protected:
 	 **/
 	void InitializeConfiguration();
 
+	void OnFrameworkEvent(Event* event);
+
 private:
 	/**
 	* 

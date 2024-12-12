@@ -18,35 +18,22 @@
 
 #pragma once
 
+/* Project Headers */
+#include <trx/core/framework/Framework.hpp>
+
 namespace trx
 {
 
-enum EventKey : size_t
+class RemoteSessionFw : public Framework
 {
-	/*
-		Application Events
-	*/
-    APPLICATION_SHOULD_CLOSE = 0x0000000000000001,
-	BOOTSTRAP_FRAMEWORK		 = 0x00000000000000F0,
+public:
+	void Initialize() override;
 
-	/*
-		Window Events
-	*/
-	WINDOW_RESIZE_EVENT		 = 0x0000000000001000,
+	void Update() override;
 
-	/*
-		Layer Events
-	*/
-	PUSH_LAYER_EVENT		 = 0x0000000000000003,
-	POP_LAYER_EVENT		     = 0x0000000000000004,
+	void Shutdown() override;
 
-	PUSH_LAYER_DEFERRED		 = 0x0000000000000005,
-	POP_LAYER_DEFERRED		 = 0x0000000000000006,
-
-	/*
-		Special Request
-	*/
-	REQUEST_WINDOW_SIZE		 = 0xF000000000000001,
+	void Restart() override;
 };
 
 } // ns trx

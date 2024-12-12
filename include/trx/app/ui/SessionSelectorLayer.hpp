@@ -51,6 +51,21 @@ protected:
 private:
 	ImVec2 m_selectorPivotPos;
 	ImVec2 m_selectorWinSize;
+
+	struct SessionData {
+		const char* ConnectionType[2] = {"Remote", "Local"};
+		int ConnectionTypeSelected = 0;
+
+		char ServerURL[255] = "https://app.trx.com";
+		char ServerUSR[255] = "";
+		char ServerPWD[255] = "";
+
+		char LocalFilePath[512] = "";
+
+		bool OpenSession = false;
+	};
+
+	SessionData m_sessionDataRef;
 };
 
 } // ns trx
