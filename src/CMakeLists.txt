@@ -50,6 +50,7 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(boost_regex CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(wt CONFIG REQUIRED)
 
 target_link_libraries(
 	TRXAPP
@@ -61,4 +62,7 @@ target_link_libraries(
 	imgui::imgui
 	Boost::regex
 	nlohmann_json::nlohmann_json
+	Wt::Wt
+	Wt::Dbo
+	# Wt::HTTP
 )
