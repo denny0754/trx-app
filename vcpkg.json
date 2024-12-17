@@ -20,6 +20,11 @@
     {
       "name": "nlohmann-json",
       "version>=": "3.11.3"
+    },
+    {
+      "name": "wt",
+      "version>=": "4.10.4",
+      "features": [ "dbo", "sqlite3" ]
     }
   ]
 }
