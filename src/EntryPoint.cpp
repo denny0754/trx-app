@@ -1,5 +1,5 @@
 #include <iostream>
-#include <trx/core/Application.hpp>
+#include <trx/Application.hpp>
 
 int main()
 {
@@ -8,5 +8,6 @@ int main()
 	trx::Application::Get().Run();
 
 	trx::Application::Get().Shutdown();
+
 	return 0;
 }

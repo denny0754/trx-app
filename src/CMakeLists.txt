@@ -2,34 +2,34 @@
 add_executable (
 	TRXAPP
 	"EntryPoint.cpp"
- 	"core/Application.cpp"
-	"core/Middleware.cpp"
+ 	"Application.cpp"
+	"Core.cpp"
 
-	"core/framework/FrontendFw.cpp"
+	# Event System Source Files
+	"ev/MiddlewareFw.cpp"
 
-	"core/ui/Layer.cpp"
-	"core/ui/LayerStack.cpp"
+	# User Interface(UI) Source Files
+	"ui/FrontendFw.cpp"
+	"ui/LayerStack.cpp"
+	"ui/MenuOverlay.cpp"
+	"ui/SessionSelectorLayer.cpp"
+	"ui/AppSettingsLayer.cpp"
+	"ui/AboutLayer.cpp"
 	
-	"core/runtime/RTResourceManager.cpp"
+	# Utilities and Logging Tools
+	"util/logging/LogManager.cpp"
+	"util/config/ConfigEntry.cpp"
+	"util/config/ConfigSection.cpp"
+	"util/config/Config.cpp"
+	"util/config/ConfigIO.cpp"
+	
+	# Resource Management System Source Files
+	"rsrc/RTResourceManagerFw.cpp"
+	"rsrc/RTAppConfig.cpp"
 
-	"utils/logging/LogManager.cpp"
-
-	"utils/config/ConfigEntry.cpp"
-	"utils/config/ConfigSection.cpp"
-	"utils/config/Config.cpp"
-	"utils/config/ConfigIO.cpp"
-
-	"app/ui/MenuOverlay.cpp"
-	"app/ui/SessionSelectorLayer.cpp"
-	"app/ui/AppSettingsLayer.cpp"
-	"app/ui/AboutLayer.cpp"
-
-	"app/runtime/RTAppConfig.cpp"
-
-	"app/framework/RemoteSessionFw.cpp"
-	"app/framework/LocalSessionFw.cpp"
-
-	"core/Core.cpp"
+	# Network Related Source Files
+	"net/RemoteSessionFw.cpp"
+	"net/LocalSessionFw.cpp"
 )
 
 set_target_properties(TRXAPP PROPERTIES
