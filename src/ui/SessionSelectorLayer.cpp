@@ -3,8 +3,7 @@
 #include <trx/ev/MiddlewareFw.hpp>
 #include <trx/util/logging/LogManager.hpp>
 #include <trx/ev/FrameworkEvent.hpp>
-#include <trx/net/LocalSessionFw.hpp>
-#include <trx/net/RemoteSessionFw.hpp>
+#include <trx/net/SessionFw.hpp>
 #include <trx/Application.hpp>
 
 /* External Headers */
@@ -97,25 +96,25 @@ void SessionSelectorLayer::OnRender()
 
 void SessionSelectorLayer::OnUpdate(double delta)
 {
+    auto mw_fw = Application::Get().GetFw("_APP_MIDDLEWARE")->ToType<ev::MiddlewareFw*>();
+
     if (m_sessionDataRef.OpenSession)
     {
         // Remote Session
         if (m_sessionDataRef.ConnectionTypeSelected == 0)
         {
             TRX_TRC("APP", "Remote Session has been selected and it's going to  be bootstrapped soon...");
-            // Uncomment when the Remote Session Framework and backend features have been implemented.
-            //Middleware::Get().PushEvent(
-            //    new FrameworkEvent(new FrameworkEventData(new RemoteSessionFw()), EventKey::BOOTSTRAP_FRAMEWORK)
-            //);
+            mw_fw->PushEvent(
+                new ev::FrameworkEvent(new ev::FrameworkEventData(new net::SessionFw(net::SessionType::REMOTE_SESSION, "")), ev::EventKey::BOOTSTRAP_FRAMEWORK)
+            );
         }
         // Local Session
         else if (m_sessionDataRef.ConnectionTypeSelected == 1)
         {
             TRX_TRC("APP", "Local Session has been selected and it's going to be bootstrapped soon...");
-            // Uncomment when the Local Session Framework and backend features have been implemented.
-            //Middleware::Get().PushEvent(
-            //    new FrameworkEvent(new FrameworkEventData(new LocalSessionFw()), EventKey::BOOTSTRAP_FRAMEWORK)
-            //);
+            mw_fw->PushEvent(
+                new ev::FrameworkEvent(new ev::FrameworkEventData(new net::SessionFw(net::SessionType::LOCAL_SESSION, "")), ev::EventKey::BOOTSTRAP_FRAMEWORK)
+            );
         }
     }
 }

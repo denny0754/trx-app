@@ -163,7 +163,7 @@ void FrontendFw::Update()
 
     glfwSwapBuffers(m_nativeWindow);
 
-     TRX_TRC("APP", "FrontendFw~Update took: {0}ms", fw_timer.ElapsedMillis());
+    // TRX_TRC("APP", "FrontendFw~Update took: {0}ms", fw_timer.ElapsedMillis());
 }
 
 void FrontendFw::Shutdown()

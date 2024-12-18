@@ -18,24 +18,12 @@
 
 #pragma once
 
-/* Project Headers */
-#include <trx/intf/Framework.hpp>
-
-namespace trx::net
+namespace trx::intf
 {
 
-class LocalSessionFw : public intf::Framework
+class SessionResource
 {
-public:
-	LocalSessionFw();
 
-	void Initialize() override;
-
-	void Update() override;
-
-	void Shutdown() override;
-
-	void Restart() override;
 };
 
-} // ns trx::net
+} // ns trx::intf

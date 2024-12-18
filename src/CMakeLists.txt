@@ -28,8 +28,9 @@ add_executable (
 	"rsrc/RTAppConfig.cpp"
 
 	# Network Related Source Files
-	"net/RemoteSessionFw.cpp"
-	"net/LocalSessionFw.cpp"
+	"net/SessionFw.cpp"
+	"net/LocalSessionWrapper.cpp"
+	"net/RemoteSessionWrapper.cpp"
 )
 
 set_target_properties(TRXAPP PROPERTIES
@@ -64,5 +65,6 @@ target_link_libraries(
 	nlohmann_json::nlohmann_json
 	Wt::Wt
 	Wt::Dbo
-	# Wt::HTTP
+	Wt::HTTP
+	Wt::DboSqlite3
 )

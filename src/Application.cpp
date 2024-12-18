@@ -189,6 +189,8 @@ void Application::OnFrameworkEvent(ev::Event* event)
 	const ev::FrameworkEvent* fw_event = event->ToType<ev::FrameworkEvent>();
 	const ev::FrameworkEventData* fw_event_data = event->GetEventData()->ToType<ev::FrameworkEventData>();
 
+	TRX_TRC("APP", "Application~OnFrameworkEvent has been called. Framework: {0}", fw_event_data->GetFramework()->GetFwID());
+
 	if (fw_event->GetEventKey() == ev::EventKey::BOOTSTRAP_FRAMEWORK)
 	{
 		const std::string& fw_id = fw_event_data->GetFramework()->GetFwID();
@@ -198,6 +200,7 @@ void Application::OnFrameworkEvent(ev::Event* event)
 			{
 				m_frameworks.erase(fw_id);
 				m_frameworks[fw_id] = std::shared_ptr<intf::Framework>(fw_event_data->GetFramework());
+				m_frameworks[fw_id]->Initialize();
 			}
 			else
 			{
@@ -208,6 +211,7 @@ void Application::OnFrameworkEvent(ev::Event* event)
 		else
 		{
 			m_frameworks[fw_id] = std::shared_ptr<intf::Framework>(fw_event_data->GetFramework());
+			m_frameworks[fw_id]->Initialize();
 		}
 	}
 }

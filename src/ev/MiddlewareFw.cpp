@@ -80,10 +80,12 @@ void MiddlewareFw::Unsubscribe(EventKey event_key, const EventListenerRef& liste
 void MiddlewareFw::PushEvent(Event* event)
 {
 	EventKey ekey = event->GetEventKey();
+	TRX_TRC("APP", "New event has been pushed. Event Key: {0}", (int)ekey);
 	if (m_subscribers.find(ekey) != m_subscribers.end())
 	{
 		for (auto handler : m_subscribers.at(ekey))
 		{
+			TRX_TRC("APP", "Handler is being called...");
 			handler(event);
 		}
 	}

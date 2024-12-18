@@ -18,24 +18,13 @@
 
 #pragma once
 
-/* Project Headers */
-#include <trx/intf/Framework.hpp>
-
-namespace trx::net
+namespace trx::intf
 {
 
-class RemoteSessionFw : public intf::Framework
+class SessionRequest
 {
 public:
-	RemoteSessionFw();
-
-	void Initialize() override;
-
-	void Update() override;
-
-	void Shutdown() override;
-
-	void Restart() override;
+    virtual void Execute() = 0;
 };
 
-} // ns trx::net
+} // ns trx::intf
