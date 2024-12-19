@@ -1,7 +1,5 @@
 /* Project Headers*/
 #include <trx/net/SessionFw.hpp>
-#include <trx/net/LocalSessionWrapper.hpp>
-#include <trx/net/RemoteSessionWrapper.hpp>
 #include <trx/util/logging/LogManager.hpp>
 
 namespace trx::net
@@ -44,12 +42,12 @@ void SessionFw::Restart()
 
 void SessionFw::InitializeRemoteSession()
 {
-    m_sessionWrapper = std::make_unique<LocalSessionWrapper>();
+    
 }
 
 void SessionFw::InitializeLocalSession()
 {
-    m_sessionWrapper = std::make_unique<RemoteSessionWrapper>();
+
 }
 
 } // ns trx::net

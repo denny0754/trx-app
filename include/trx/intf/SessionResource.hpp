@@ -23,7 +23,12 @@ namespace trx::intf
 
 class SessionResource
 {
-
+public:
+	template<class Type>
+	inline Type ToType()
+	{
+		return static_cast<Type>(this);
+	}
 };
 
 } // ns trx::intf

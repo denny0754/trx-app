@@ -50,6 +50,7 @@ find_package(spdlog CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(boost_regex CONFIG REQUIRED)
+find_package(boost_beast CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(wt CONFIG REQUIRED)
 
@@ -62,6 +63,7 @@ target_link_libraries(
 	opengl32
 	imgui::imgui
 	Boost::regex
+	Boost::beast
 	nlohmann_json::nlohmann_json
 	Wt::Wt
 	Wt::Dbo

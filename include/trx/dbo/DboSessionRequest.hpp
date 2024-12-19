@@ -19,17 +19,14 @@
 #pragma once
 
 /* Project Headers */
-#include <trx/intf/BackendSessionWrapper.hpp>
+#include <trx/intf/SessionRequest.hpp>
 
-namespace trx::net
+namespace trx::dbo
 {
 
-class RemoteSessionWrapper : public intf::BackendSessionWrapper
+class DboSessionRequest : public intf::SessionRequest
 {
-public:
-    std::shared_ptr<intf::SessionResource> ReadResource(std::weak_ptr<intf::SessionRequest> request);
 
-    std::shared_ptr<intf::SessionResource> WriteResource(std::weak_ptr<intf::SessionRequest> request);
 };
 
-} // ns trx::net
+} // ns trx::dbo

@@ -19,6 +19,7 @@
 #pragma once
 
 /* Project Headers */
+#include <trx/dbo/AbstractTable.hpp>
 
 /* External Headers */
 #include <Wt/Dbo/Dbo.h>
@@ -29,7 +30,7 @@
 namespace trx::dbo
 {
 
-class T_User
+class T_User : public AbstractTable
 {
 public:
 	template <class Action>

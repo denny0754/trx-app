@@ -18,32 +18,9 @@
 
 #pragma once
 
-/* Project Headers */
-#include <trx/intf/BackendSessionWrapper.hpp>
-
-/* External Headers */
-#include <Wt/Dbo/Dbo.h>
-#include <Wt/Dbo/backend/Sqlite3.h>
-
-/* Standard Headers */
-#include <string>
-
-namespace trx::net
+namespace trx::dbo
 {
 
-class LocalSessionWrapper : public intf::BackendSessionWrapper
-{ 
-public:
-	LocalSessionWrapper(const std::string& db_file);
 
-    std::shared_ptr<intf::SessionResource> ReadResource(std::weak_ptr<intf::SessionRequest> request);
 
-    std::shared_ptr<intf::SessionResource> WriteResource(std::weak_ptr<intf::SessionRequest> request);
-
-private:
-	std::string m_databaseFile;
-
-	Wt::Dbo::Session m_session;
-};
-
-} // ns trx::net
+} // ns trx::dbo

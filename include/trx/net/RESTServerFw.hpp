@@ -18,17 +18,32 @@
 
 #pragma once
 
-namespace trx::intf
+/* Project Headers */
+#include <trx/intf/Framework.hpp>
+
+/* Standard Headers */
+#include <string>
+
+namespace trx::net
 {
 
-class SessionRequest
+class RESTServerFw : public intf::Framework
 {
 public:
-	template<class Type>
-	inline Type ToType()
-	{
-		return static_cast<Type>(this);
-	}
+    RESTServerFw(const std::string& address, uint16_t port);
+
+    void Initialize() override;
+
+    void Update() override;
+
+    void Shutdown() override;
+
+    void Restart() override;
+
+private:
+    std::string m_address;
+
+    uint16_t m_port;
 };
 
-} // ns trx::intf
+} // ns trx::net

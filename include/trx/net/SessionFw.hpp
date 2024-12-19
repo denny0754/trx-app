@@ -20,7 +20,6 @@
 
 /* Project Header */
 #include <trx/intf/Framework.hpp>
-#include <trx/intf/BackendSessionWrapper.hpp>
 
 /* Standard Headers */
 #include <string>
@@ -60,11 +59,6 @@ public:
 
     void Restart() override;
 
-    intf::BackendSessionWrapper* GetSessionWrapper()
-    {
-        return m_sessionWrapper.get();
-    }
-
 protected:
     void InitializeRemoteSession();
 
@@ -74,8 +68,6 @@ private:
     SessionType m_sessionType;
 
     std::string m_connString;
-
-    std::unique_ptr<intf::BackendSessionWrapper> m_sessionWrapper;
 };
 
 } // ns trx::net

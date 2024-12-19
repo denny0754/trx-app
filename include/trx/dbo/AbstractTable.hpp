@@ -18,22 +18,17 @@
 
 #pragma once
 
-/* Project Headers */
-#include <trx/intf/SessionRequest.hpp>
-#include <trx/intf/SessionResource.hpp>
-
-/* Standard Headers */
-#include <memory>
-
-namespace trx::intf
+namespace trx::dbo
 {
 
-class BackendSessionWrapper
+class AbstractTable
 {
 public:
-    virtual std::shared_ptr<intf::SessionResource> ReadResource(std::weak_ptr<intf::SessionRequest> request) = 0;
-
-    virtual std::shared_ptr<intf::SessionResource> WriteResource(std::weak_ptr<intf::SessionRequest> request) = 0;
+    template<class Type>
+    Type ToType()
+    {
+        return static_cast<Type>(this);
+    }
 };
 
-} // ns trx::net
+} // ns trx::dbo
