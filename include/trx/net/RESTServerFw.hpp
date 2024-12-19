@@ -21,6 +21,9 @@
 /* Project Headers */
 #include <trx/intf/Framework.hpp>
 
+/* External Headers */
+#include <boost/beast/http.hpp>
+
 /* Standard Headers */
 #include <string>
 
