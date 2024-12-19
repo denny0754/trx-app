@@ -29,8 +29,6 @@ add_executable (
 
 	# Network Related Source Files
 	"net/SessionFw.cpp"
-	"net/LocalSessionWrapper.cpp"
-	"net/RemoteSessionWrapper.cpp"
 )
 
 set_target_properties(TRXAPP PROPERTIES

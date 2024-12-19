@@ -49,7 +49,7 @@ public:
      *                    `{API_URL};{USERNAME};{API_KEY|PASSWORD}`
      * 
      **/
-    SessionFw(SessionType stype, const std::string& conn_string);
+    SessionFw(SessionType stype, const std::string& address, const std::string& user, const std::string& pwd);
 
     void Initialize() override;
 
@@ -67,7 +67,9 @@ protected:
 private:
     SessionType m_sessionType;
 
-    std::string m_connString;
+    std::string m_srvAddress;
+    std::string m_srvUser;
+    std::string m_srvPass;
 };
 
 } // ns trx::net

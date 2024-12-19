@@ -49,39 +49,32 @@ void SessionSelectorLayer::OnRender()
         ImGuiWindowFlags_::ImGuiWindowFlags_NoResize
     );
 
-    ImGui::Text("Session:");
+    ImGui::Text("Connection Type:");
     ImGui::SameLine();
-    ImGui::Combo("##session",
+    ImGui::Combo(
+        "##connection_type",
         &m_sessionDataRef.ConnectionTypeSelected,
         m_sessionDataRef.ConnectionType,
         IM_ARRAYSIZE(m_sessionDataRef.ConnectionType)
     );
 
-    // Remote Connection
+    ImGui::Text("Username:");
+    ImGui::SameLine();
+    ImGui::InputText("##session_user", m_sessionDataRef.ServerUSR, 255);
+    
+    ImGui::Text("Password:");
+    ImGui::SameLine();
+    ImGui::InputText("##session_pass", m_sessionDataRef.ServerPWD, 255, ImGuiInputTextFlags_::ImGuiInputTextFlags_Password);
+
+    // If we select the Remote connection type, we should display the URL input.
     if(m_sessionDataRef.ConnectionTypeSelected == 0)
     {
-        ImGui::SeparatorText("Connection Configuration");
-        ImGui::Text("URL: ");
+        ImGui::Text("Server URL:");
         ImGui::SameLine();
-        ImGui::InputText("##remote_session_url", m_sessionDataRef.ServerURL, 255);
-        ImGui::Text("Username: ");
-        ImGui::SameLine();
-        ImGui::InputText("##remote_session_user", m_sessionDataRef.ServerUSR, 255);
-        ImGui::Text("Password: ");
-        ImGui::SameLine();
-        ImGui::InputText("##remote_session_passw", m_sessionDataRef.ServerPWD, 255, ImGuiInputTextFlags_::ImGuiInputTextFlags_Password);
-        m_sessionDataRef.OpenSession =  ImGui::Button("Connect");
+        ImGui::InputText("##session_url", m_sessionDataRef.ServerURL, 255);
     }
-    else if(m_sessionDataRef.ConnectionTypeSelected == 1)
-    {
-        ImGui::SeparatorText("Local Databases");
-        ImGui::Text("Database File: ");
-        ImGui::SameLine();
-        ImGui::InputText("##file_path", m_sessionDataRef.LocalFilePath, 512, ImGuiInputTextFlags_::ImGuiInputTextFlags_AllowTabInput);
-        ImGui::Button("New Database...");
-        ImGui::SameLine();
-        m_sessionDataRef.OpenSession = ImGui::Button("Open");
-    }
+
+    m_sessionDataRef.OpenSession = ImGui::Button("Connect...");
 
     ImGui::End();
 
@@ -105,7 +98,15 @@ void SessionSelectorLayer::OnUpdate(double delta)
         {
             TRX_TRC("APP", "Remote Session has been selected and it's going to  be bootstrapped soon...");
             mw_fw->PushEvent(
-                new ev::FrameworkEvent(new ev::FrameworkEventData(new net::SessionFw(net::SessionType::REMOTE_SESSION, "")), ev::EventKey::BOOTSTRAP_FRAMEWORK)
+                new ev::FrameworkEvent(
+                    new ev::FrameworkEventData(
+                        new net::SessionFw(
+                            net::SessionType::REMOTE_SESSION,
+                            fmt::format("{0};{1};{2}", m_sessionDataRef.ServerURL, m_sessionDataRef.ServerUSR, m_sessionDataRef.ServerPWD)
+                        )
+                    ),
+                    ev::EventKey::BOOTSTRAP_FRAMEWORK
+                )
             );
         }
         // Local Session
@@ -113,7 +114,15 @@ void SessionSelectorLayer::OnUpdate(double delta)
         {
             TRX_TRC("APP", "Local Session has been selected and it's going to be bootstrapped soon...");
             mw_fw->PushEvent(
-                new ev::FrameworkEvent(new ev::FrameworkEventData(new net::SessionFw(net::SessionType::LOCAL_SESSION, "")), ev::EventKey::BOOTSTRAP_FRAMEWORK)
+                new ev::FrameworkEvent(
+                    new ev::FrameworkEventData(
+                        new net::SessionFw(
+                            net::SessionType::LOCAL_SESSION,
+                            fmt::format("127.0.0.1:8888;{1};{2}", m_sessionDataRef.ServerUSR, m_sessionDataRef.ServerPWD)
+                        )
+                    ),
+                    ev::EventKey::BOOTSTRAP_FRAMEWORK
+                )
             );
         }
     }
