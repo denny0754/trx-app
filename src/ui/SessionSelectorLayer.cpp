@@ -102,7 +102,9 @@ void SessionSelectorLayer::OnUpdate(double delta)
                     new ev::FrameworkEventData(
                         new net::SessionFw(
                             net::SessionType::REMOTE_SESSION,
-                            fmt::format("{0};{1};{2}", m_sessionDataRef.ServerURL, m_sessionDataRef.ServerUSR, m_sessionDataRef.ServerPWD)
+                            m_sessionDataRef.ServerURL,
+                            m_sessionDataRef.ServerUSR,
+                            m_sessionDataRef.ServerPWD
                         )
                     ),
                     ev::EventKey::BOOTSTRAP_FRAMEWORK
@@ -118,7 +120,9 @@ void SessionSelectorLayer::OnUpdate(double delta)
                     new ev::FrameworkEventData(
                         new net::SessionFw(
                             net::SessionType::LOCAL_SESSION,
-                            fmt::format("127.0.0.1:8888;{1};{2}", m_sessionDataRef.ServerUSR, m_sessionDataRef.ServerPWD)
+                            "127.0.0.1:8888",
+                            m_sessionDataRef.ServerUSR,
+                            m_sessionDataRef.ServerPWD
                         )
                     ),
                     ev::EventKey::BOOTSTRAP_FRAMEWORK
