@@ -16,7 +16,7 @@ MiddlewareFw::MiddlewareFw()
 
 void MiddlewareFw::Initialize()
 {
-	m_isDetached = false;
+	m_isDetached = true;
 	m_registerOnce = true;
 	m_isReady = true;
 }

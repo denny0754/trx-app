@@ -27,6 +27,9 @@ FrontendFw::FrontendFw()
 {
     m_fwId = "_APP_FRONTEND";
     m_nativeWindow = nullptr;
+    m_isDetached = false;
+    m_isReady = false;
+    m_registerOnce = true;
 }
 
 void FrontendFw::Initialize()

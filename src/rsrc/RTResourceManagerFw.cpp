@@ -9,6 +9,9 @@ RTResourceManagerFw::RTResourceManagerFw()
     : Framework()
 {
     m_fwId = "_APP_RT_RSRC_MANAGER";
+    m_isDetached = true;
+    m_isReady = true;
+    m_registerOnce = true;
 }
 
 void RTResourceManagerFw::Initialize()
@@ -31,7 +34,8 @@ void RTResourceManagerFw::Update()
 
 void RTResourceManagerFw::Restart()
 {
-
+    Shutdown();
+    Initialize();
 }
 
 void RTResourceManagerFw::PushResource(const std::string& rsrc_key, std::shared_ptr<RTResource> rsrc)
